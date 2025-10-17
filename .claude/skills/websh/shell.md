@@ -138,3 +138,143 @@ what forms are on this page?
 is there a login?
 check if example.com is up
 compare this to yesterday
+```
+
+Translate to the appropriate command(s) and execute. No confirmation needed.
+
+## The Shell Model
+
+| Concept | websh | Unix analogy |
+|---------|-------|--------------|
+| Current location | A URL | Working directory |
+| Navigation | `cd <url>` | `cd /path` |
+| Listing | `ls` (shows links) | `ls` (shows files) |
+| Reading | `cat <selector>` | `cat file` |
+| Searching | `grep <pattern>` | `grep pattern *` |
+| Recursive search | `find` | `find . -name` |
+| Cached search | `locate` | `locate` / `mlocate` |
+| Background jobs | `&`, `jobs`, `ps` | Process management |
+| Environment | `env`, `export` | Shell environment |
+| Mounting | `mount <api> /path` | Mount filesystems |
+| Scheduling | `cron`, `at` | Task scheduling |
+
+The web is your filesystem. Each URL is a "directory" you can enter and explore.
+
+---
+
+## Session State
+
+You maintain session state in `.websh/session.md`:
+
+```markdown
+# websh session
+
+started: 2026-01-24T10:30:00Z
+pwd: https://news.ycombinator.com
+pwd_slug: news-ycombinator-com
+chroot: (none)
+
+## Navigation Stack
+
+- https://news.ycombinator.com (current)
+
+## Environment
+
+USER_AGENT: websh/1.0
+TIMEOUT: 30
+
+## Mounts
+
+/gh → github:api.github.com
+
+## Jobs
+
+1: extracting news-ycombinator-com
+2: watching status.example.com
+
+## Aliases
+
+hn = cd https://news.ycombinator.com
+top5 = ls | head 5
+
+## Recent Commands
+
+1. cd https://news.ycombinator.com
+2. ls | head 5
+3. grep "AI"
+```
+
+### State Operations
+
+| Operation | Action |
+|-----------|--------|
+| **On startup** | Read `.websh/session.md` if exists, or create new |
+| **On `cd`** | Update `pwd`, push to navigation stack |
+| **On `back`** | Pop navigation stack, update `pwd` |
+| **On `export`** | Update environment section |
+| **On `mount`** | Add to mounts section |
+| **On `alias`** | Add to aliases section |
+| **On background `&`** | Add to jobs section |
+| **On any command** | Append to command history |
+
+---
+
+## Prompt Format
+
+Your prompt shows the current location:
+
+```
+{domain}[/path]>
+```
+
+With chroot, show the boundary:
+```
+[docs.python.org/3/]tutorial>
+```
+
+With mounted paths:
+```
+/gh/repos/octocat>
+```
+
+Examples:
+- `~>` — No URL loaded yet
+- `news.ycombinator.com>` — At root of HN
+- `news.ycombinator.com/item>` — At a subpath
+- `/gh/users/octocat>` — In mounted GitHub API
+
+---
+
+## Command Execution
+
+When you receive input, parse and execute as shell commands.
+
+### 1. Parse the command line
+
+```
+command [args...] [| command [args...]]... [&] [> file]
+```
+
+Features:
+- Pipes (`|`)
+- Background (`&`)
+- Redirection (`>`, `>>`)
+- Command substitution (`$()`)
+- History expansion (`!!`, `!n`)
+
+### 2. Expand aliases and variables
+
+```
+# If user types:
+hn
+# And alias hn='cd https://news.ycombinator.com', expand to:
+cd https://news.ycombinator.com
+```
+
+### 3. Route to handler
+
+| Category | Commands | Needs Network? |
+|----------|----------|----------------|
+| Navigation | `cd`, `back`, `forward`, `follow`, `go` | Maybe (if not cached) |
+| Query | `ls`, `cat`, `grep`, `stat`, `dom`, `source` | No (uses cache) |
+| Search | `find`, `locate`, `tree` | Maybe (find can crawl) |
