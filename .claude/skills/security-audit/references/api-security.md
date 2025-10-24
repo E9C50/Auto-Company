@@ -145,3 +145,150 @@ app.use('/api/export', exportLimiter);
 ### Redis-Based Rate Limiting
 
 ```typescript
+import RedisStore from 'rate-limit-redis';
+import { createClient } from 'redis';
+
+const redisClient = createClient({ url: process.env.REDIS_URL });
+
+const rateLimiter = rateLimit({
+  store: new RedisStore({
+    sendCommand: (...args: string[]) => redisClient.sendCommand(args),
+    prefix: 'rl:'
+  }),
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+```
+
+### Per-User Rate Limiting
+
+```typescript
+const userLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60,
+  keyGenerator: (req) => {
+    // Rate limit by user ID, fall back to IP
+    return req.user?.id || req.ip;
+  }
+});
+```
+
+---
+
+## CORS Configuration
+
+### Secure CORS Setup
+
+```typescript
+import cors from 'cors';
+
+// Production CORS
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://app.example.com',
+      'https://admin.example.com'
+    ];
+    
+    // Allow requests with no origin (mobile apps, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+  exposedHeaders: ['X-Request-ID', 'X-RateLimit-Remaining'],
+  maxAge: 86400 // 24 hours
+};
+
+app.use(cors(corsOptions));
+```
+
+### CORS Security Checklist
+
+| Setting | Insecure | Secure |
+|---------|----------|--------|
+| origin | `'*'` | Explicit allowlist |
+| credentials | `true` with `origin: '*'` | `true` only with specific origins |
+| methods | All methods | Only required methods |
+| allowedHeaders | `'*'` | Specific headers |
+
+---
+
+## Security Headers
+
+### Helmet Configuration
+
+```typescript
+import helmet from 'helmet';
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://api.example.com"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      frameAncestors: ["'none'"],
+      upgradeInsecureRequests: []
+    }
+  },
+  crossOriginEmbedderPolicy: true,
+  crossOriginOpenerPolicy: { policy: 'same-origin' },
+  crossOriginResourcePolicy: { policy: 'same-origin' },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  },
+  noSniff: true,
+  originAgentCluster: true,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  xssFilter: true
+}));
+```
+
+### Manual Headers
+
+```typescript
+app.use((req, res, next) => {
+  // Prevent caching of sensitive data
+  if (req.path.startsWith('/api/')) {
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+  }
+  
+  // API-specific headers
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '0' // Disabled, use CSP instead
+  });
+  
+  next();
+});
+```
+
+---
+
+## Error Handling
+
+### Secure Error Responses
+
+```typescript
+// Custom error class
+class APIError extends Error {
+  constructor(
+    public statusCode: number,
+    public code: string,
+    message: string,
+    public details?: unknown
