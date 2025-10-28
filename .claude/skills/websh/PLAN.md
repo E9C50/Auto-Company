@@ -124,3 +124,129 @@ Immediately after fetch, spawn a background haiku agent that **loops** to build 
 ```
 Task({
   description: "websh: iterative page extraction",
+  prompt: "<extraction prompt - see below>",
+  subagent_type: "general-purpose",
+  model: "haiku",
+  run_in_background: true
+})
+```
+
+The haiku agent runs an **iterative intelligent parse**:
+
+```
+loop until **extraction is thorough**:
+  1. Read the raw .html
+  2. Read current .parsed.md (if exists)
+  3. Identify what's missing or could be richer
+  4. Append/update the .parsed.md with new findings
+  5. Repeat until diminishing returns
+```
+
+Each pass focuses on different aspects:
+- **Pass 1**: Basic structure (title, main headings, link inventory)
+- **Pass 2**: Content extraction (article text, comments, key quotes)
+- **Pass 3**: Metadata and context (author, date, related links, site structure)
+- **Pass 4+**: Edge cases, missed content, cleanup
+
+**Output: `.websh/cache/{hash}.parsed.md`**
+
+```markdown
+# https://news.ycombinator.com
+
+Fetched: 2026-01-24T10:30:00Z
+Extraction: 3 passes
+
+## Summary
+
+Hacker News front page. Tech news aggregator with user-submitted links
+and discussions. 30 stories visible, mix of Show HN, technical articles,
+and industry news.
+
+## Links
+
+| # | Title | Points | Comments |
+|---|-------|--------|----------|
+| 0 | Show HN: I built a tool for... | 142 | 87 |
+| 1 | The State of AI in 2026 | 891 | 432 |
+| 2 | Why Rust is eating the world | 234 | 156 |
+...
+
+## Navigation
+
+- [new](/newest) - Newest submissions
+- [past](/front) - Past front pages
+- [comments](/newcomments) - Recent comments
+- [ask](/ask) - Ask HN
+- [show](/show) - Show HN
+- [jobs](/jobs) - Jobs
+
+## Content Patterns
+
+This is a link aggregator. Each story has:
+- Title (class: .titleline)
+- Points and submitter (class: .score, .hnuser)
+- Comment count (links to /item?id=...)
+- Domain in parentheses
+
+## Raw Text Snippets
+
+### Top Stories
+1. "Show HN: I built a tool for..." - 142 points, 87 comments
+2. "The State of AI in 2026" - 891 points, 432 comments
+...
+
+## Forms
+
+- Search: input[name=q] at /hn.algolia.com
+- Login: /login (username, password)
+
+## Notes
+
+- No images on front page (text-only design)
+- Mobile-friendly, minimal CSS
+- Stories refresh frequently
+```
+
+**User experience:**
+
+```
+news.ycombinator.com> cd https://example.com
+
+fetching... done
+extracting... (pass 1)
+
+example.com> ls
+
+# Shows what's available so far
+# Agent continues extracting in background
+# Subsequent commands get richer data as passes complete
+```
+
+### Why iterative?
+
+- **Progressive richness**: First pass gives basics fast, later passes add depth
+- **Intelligent focus**: Haiku decides what to extract based on page type
+- **Human-readable output**: Markdown is inspectable, debuggable, useful
+- **Graceful degradation**: Commands work after pass 1, improve with more passes
+- **Site-aware**: Haiku recognizes patterns (HN stories, tweets, blog posts) and adapts
+
+### Why haiku?
+
+- **Fast**: Each pass completes quickly
+- **Cheap**: Multiple passes still economical
+- **Parallel**: Doesn't block user commands
+- **Smart**: Adapts extraction strategy to content type
+
+---
+
+## State Management
+
+### Session state (`session.md`)
+
+Tracks the current shell session:
+
+```markdown
+# websh session
+
+pwd: https://news.ycombinator.com
+started: 2026-01-24T10:30:00Z
