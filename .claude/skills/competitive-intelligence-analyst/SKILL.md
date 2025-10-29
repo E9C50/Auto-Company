@@ -131,3 +131,136 @@ Create a feature-by-feature comparison:
 - Are you priced above or below market?
 - What justifies premium pricing?
 - What's the pricing trend (up/down)?
+- Are competitors doing discounts/promotions?
+
+### Step 5: Messaging & Positioning Analysis
+
+**How competitors position themselves:**
+
+| Competitor | Tagline | Key Promise | Target Customer |
+|------------|---------|-------------|-----------------|
+| Comp A | "[Their tagline]" | [Main promise] | [Who they target] |
+| Comp B | "[Their tagline]" | [Main promise] | [Who they target] |
+| Comp C | "[Their tagline]" | [Main promise] | [Who they target] |
+| **You** | "[Your tagline]" | [Your promise] | [Your target] |
+
+**Positioning Questions:**
+
+- What positioning is crowded?
+- What positioning is underserved?
+- How can you be meaningfully different?
+
+### Step 6: Gap Analysis
+
+Find what competitors DON'T do:
+
+**Gap Discovery Framework:**
+
+| Gap Type | How to Find | Example |
+|----------|-------------|---------|
+| **Feature gaps** | Missing in all competitors | No API, no integrations |
+| **Customer gaps** | Underserved segment | Small teams ignored |
+| **Pricing gaps** | No option at price point | Nothing between free and $100/mo |
+| **Experience gaps** | UX/support complaints | All competitors have bad UX |
+| **Speed gaps** | Slow to ship/respond | Competitors are slow |
+
+**Gap Analysis Questions:**
+
+- What do customers complain about with competitors?
+- What features are missing across the market?
+- Which customer segment is underserved?
+- What price point has no options?
+- Where is competitor support/UX weak?
+
+### Step 7: Win/Loss Analysis
+
+Track why you win or lose deals:
+
+**Win/Loss Tracker:**
+
+| Deal | Outcome | Competitor | Why We Won/Lost |
+|------|---------|------------|-----------------|
+| Deal 1 | Won | Comp A | [Reason] |
+| Deal 2 | Lost | Comp B | [Reason] |
+| Deal 3 | Won | None | [Reason] |
+
+**Win/Loss Patterns:**
+
+| Pattern | Action |
+|---------|--------|
+| Lose on price | Value messaging or lower price tier |
+| Lose on features | Roadmap priority or positioning shift |
+| Lose on trust | More social proof, case studies |
+| Lose on support | Improve support experience |
+| Win on ease of use | Double down on simplicity messaging |
+| Win on support | Make support a key differentiator |
+
+### Step 8: Monitoring System
+
+Set up ongoing competitive monitoring:
+
+**Weekly Monitoring:**
+
+- [ ] Check competitor Twitter/LinkedIn for announcements
+- [ ] Review competitor changelog/blog
+- [ ] Check G2/Capterra for new reviews
+- [ ] Set Google Alerts for competitor names
+
+**Monthly Monitoring:**
+
+- [ ] Pricing page screenshots (track changes)
+- [ ] Feature page updates
+- [ ] New customer logos/case studies
+- [ ] Job postings (signal investment areas)
+
+**Quarterly Deep Dive:**
+
+- [ ] Full competitor refresh
+- [ ] Win/loss review
+- [ ] Positioning assessment
+- [ ] Market trend analysis
+
+**Tools:**
+
+| Tool | Purpose | Cost |
+|------|---------|------|
+| Google Alerts | Monitor mentions | Free |
+| Visualping | Page change alerts | Free-$10/mo |
+| SimilarWeb | Traffic data | Free tier |
+| BuiltWith | Tech monitoring | Free tier |
+| Owler | Company alerts | Free |
+
+## Output Format
+
+```markdown
+# Competitive Intelligence Report: [Your Business]
+
+## Executive Summary
+
+**Market Position:** [Leader / Challenger / Niche / Emerging]
+**Primary Competitors:** [Top 3]
+**Key Differentiator:** [What makes you unique]
+**Biggest Threat:** [Most dangerous competitor]
+**Biggest Opportunity:** [Gap to exploit]
+
+## Competitive Landscape
+
+### Direct Competitors
+
+#### [Competitor A]
+- **Website:** [URL]
+- **Positioning:** [Their tagline/promise]
+- **Target Customer:** [Who they serve]
+- **Pricing:** [Entry tier] - [Top tier]
+- **Strengths:** [What they do well]
+- **Weaknesses:** [Where they're weak]
+- **Recent Moves:** [Latest announcements]
+- **Threat Level:** [High/Medium/Low]
+
+#### [Competitor B]
+[Same format]
+
+#### [Competitor C]
+[Same format]
+
+### Indirect Competitors
