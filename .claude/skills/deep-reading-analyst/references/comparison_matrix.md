@@ -108,3 +108,113 @@ When sources describe different methods/approaches:
 | Method | Source | Best For | Limitations | Difficulty | Results |
 |--------|--------|----------|-------------|------------|---------|
 | [Method A] | [Source 1] | [Use case] | [Weakness] | Easy | [Outcome] |
+| [Method B] | [Source 2] | [Use case] | [Weakness] | Hard | [Outcome] |
+| [Method C] | [Source 3] | [Use case] | [Weakness] | Medium | [Outcome] |
+
+## Recommendation
+Use [Method X] when [condition]
+Use [Method Y] when [condition]
+Combine [X + Y] for [scenario]
+```
+
+---
+
+## Viewpoint Spectrum
+
+When sources represent different positions on a spectrum:
+
+```markdown
+# Viewpoint Spectrum: [Topic]
+
+## The Question
+[Central question being debated]
+
+## The Spectrum
+
+[Extreme Position A] ←―――――――――――→ [Extreme Position B]
+        ↑                    ↑                    ↑
+    [Source 1]          [Source 2]          [Source 3]
+
+### Position A (Source 1)
+**Core belief:** [What they believe]
+**Reasoning:** [Why they believe it]
+**Strongest point:** [Best argument]
+**Weakest point:** [Vulnerability]
+
+### Middle Position (Source 2)
+**Core belief:** [Balanced view]
+**Reasoning:** [Why they believe it]
+**Strongest point:** [Best argument]
+**Weakest point:** [Vulnerability]
+
+### Position B (Source 3)
+**Core belief:** [Opposite extreme]
+**Reasoning:** [Why they believe it]  
+**Strongest point:** [Best argument]
+**Weakest point:** [Vulnerability]
+
+## My Position
+After reviewing all perspectives:
+[Where you land on spectrum and why]
+```
+
+---
+
+## Evolution Over Time Matrix
+
+When tracking how understanding of a topic evolved:
+
+```markdown
+# Evolution of Thought: [Topic]
+
+| Period | Representative Source | Key Insight | What Changed Next |
+|--------|----------------------|-------------|-------------------|
+| [Era 1] | [Source/Author] | [Prevailing view] | [Paradigm shift] |
+| [Era 2] | [Source/Author] | [New understanding] | [Next shift] |
+| [Era 3] | [Source/Author] | [Current view] | [Open questions] |
+
+## Pattern Analysis
+**What stayed constant:** [Enduring truths]
+**What repeatedly changed:** [Unstable assumptions]
+**Current frontier:** [What we're figuring out now]
+
+## Lessons from History
+- [Historical pattern 1 and implication]
+- [Historical pattern 2 and implication]
+```
+
+---
+
+## Interdisciplinary Comparison
+
+When same topic is analyzed from different fields:
+
+```markdown
+# Multi-Disciplinary View: [Topic]
+
+| Discipline | Source | Core Question | Key Findings | Limitations |
+|------------|--------|---------------|--------------|-------------|
+| Economics | [Source] | [Question] | [Insight] | [Blind spot] |
+| Psychology | [Source] | [Question] | [Insight] | [Blind spot] |
+| Sociology | [Source] | [Question] | [Insight] | [Blind spot] |
+| Biology | [Source] | [Question] | [Insight] | [Blind spot] |
+
+## Synthesis
+**Complementary insights:**
+- Economics sees [X], Psychology explains [Y], together they reveal [Z]
+
+**Contradictions:**
+- [Field A] assumes [X], but [Field B] shows [not-X]
+- Resolution: [How to reconcile]
+
+**Blind spots filled:**
+- Economics misses [X] that Sociology provides
+- Psychology overlooks [Y] that Biology explains
+
+## Integrated Model
+[Diagram or description combining multiple lenses]
+```
+
+---
+
+## Practical Comparison
