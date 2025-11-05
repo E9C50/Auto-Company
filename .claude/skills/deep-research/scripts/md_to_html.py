@@ -108,3 +108,113 @@ def _convert_content_section(markdown: str) -> str:
         # Close executive summary at the next section
         html = html.replace(
             '</h2>\n<div class="section">',
+            '</h2></div>\n<div class="section">',
+            1
+        )
+
+    return html
+
+
+def _convert_bibliography_section(markdown: str) -> str:
+    """Convert bibliography section to HTML"""
+    if not markdown.strip():
+        return ""
+
+    html = markdown
+
+    # Convert each [N] citation to a proper bibliography entry
+    # Look for patterns like [1] Title - URL
+    html = re.sub(
+        r'\[(\d+)\]\s*(.+?)\s*-\s*(https?://[^\s\)]+)',
+        r'<div class="bib-entry"><span class="bib-number">[\1]</span> <a href="\3" target="_blank">\2</a></div>',
+        html
+    )
+
+    # Convert any remaining **bold** sections
+    html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
+
+    # Wrap in bibliography content div
+    html = f'<div class="bibliography-content">{html}</div>'
+
+    return html
+
+
+def _convert_lists(html: str) -> str:
+    """Convert markdown lists to HTML lists"""
+    lines = html.split('\n')
+    result = []
+    in_list = False
+    list_level = 0
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Check for unordered list item
+        if stripped.startswith('- ') or stripped.startswith('* '):
+            if not in_list:
+                result.append('<ul>')
+                in_list = True
+                list_level = len(line) - len(line.lstrip())
+
+            # Get the content after the marker
+            content = stripped[2:]
+            result.append(f'<li>{content}</li>')
+
+        # Check for ordered list item
+        elif re.match(r'^\d+\.\s', stripped):
+            if not in_list:
+                result.append('<ol>')
+                in_list = True
+                list_level = len(line) - len(line.lstrip())
+
+            # Get the content after the number and period
+            content = re.sub(r'^\d+\.\s', '', stripped)
+            result.append(f'<li>{content}</li>')
+
+        else:
+            # Not a list item
+            if in_list:
+                # Check if we're still in the list (indented continuation)
+                current_level = len(line) - len(line.lstrip())
+                if current_level > list_level and stripped:
+                    # Continuation of previous list item
+                    if result[-1].endswith('</li>'):
+                        result[-1] = result[-1][:-5] + ' ' + stripped + '</li>'
+                    continue
+                else:
+                    # End of list
+                    result.append('</ul>' if '<ul>' in '\n'.join(result[-10:]) else '</ol>')
+                    in_list = False
+                    list_level = 0
+
+            result.append(line)
+
+    # Close any remaining open list
+    if in_list:
+        result.append('</ul>' if '<ul>' in '\n'.join(result[-10:]) else '</ol>')
+
+    return '\n'.join(result)
+
+
+def _convert_tables(html: str) -> str:
+    """Convert markdown tables to HTML tables"""
+    lines = html.split('\n')
+    result = []
+    in_table = False
+
+    for i, line in enumerate(lines):
+        if '|' in line and line.strip().startswith('|'):
+            if not in_table:
+                result.append('<table>')
+                in_table = True
+                # This is the header row
+                cells = [cell.strip() for cell in line.split('|')[1:-1]]
+                result.append('<thead><tr>')
+                for cell in cells:
+                    result.append(f'<th>{cell}</th>')
+                result.append('</tr></thead>')
+                result.append('<tbody>')
+            elif '---' in line:
+                # Skip separator row
+                continue
+            else:
