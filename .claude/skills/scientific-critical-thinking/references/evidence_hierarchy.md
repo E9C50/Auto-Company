@@ -160,3 +160,164 @@
    - Consistent findings across contexts
    - Biological plausibility
    - No plausible confounders
+
+2. **Multiple converging lines of evidence** from different study types
+
+3. **Natural experiments** approximating randomization
+
+### When Higher-Level Evidence Can Be Weak
+1. **Poor-quality RCTs** with:
+   - Inadequate randomization
+   - High attrition
+   - No blinding when feasible
+   - Conflicts of interest
+
+2. **Biased meta-analyses**:
+   - Publication bias
+   - Selective inclusion
+   - Inappropriate pooling
+   - Poor search strategy
+
+3. **Not addressing the right question**:
+   - Wrong population
+   - Wrong comparison
+   - Wrong outcome
+   - Too artificial to generalize
+
+## Alternative: GRADE System
+
+GRADE (Grading of Recommendations Assessment, Development and Evaluation) assesses evidence quality across four levels:
+
+### High Quality
+**Definition:** Very confident that true effect is close to estimated effect.
+
+**Characteristics:**
+- Well-conducted RCTs
+- Overwhelming evidence from observational studies
+- Large, consistent effects
+- No serious limitations
+
+### Moderate Quality
+**Definition:** Moderately confident; true effect likely close to estimated, but could be substantially different.
+
+**Downgrades from high:**
+- Some risk of bias
+- Inconsistency across studies
+- Indirectness (different populations/interventions)
+- Imprecision (wide confidence intervals)
+- Publication bias suspected
+
+### Low Quality
+**Definition:** Limited confidence; true effect may be substantially different.
+
+**Downgrades:**
+- Serious limitations in above factors
+- Observational studies without special strengths
+
+### Very Low Quality
+**Definition:** Very limited confidence; true effect likely substantially different.
+
+**Characteristics:**
+- Very serious limitations
+- Expert opinion
+- Multiple serious flaws
+
+## Study Quality Assessment Criteria
+
+### Internal Validity (Bias Control)
+**Questions:**
+- Was randomization adequate?
+- Was allocation concealed?
+- Were groups similar at baseline?
+- Was blinding implemented?
+- Was attrition minimal and balanced?
+- Was intention-to-treat used?
+- Were all outcomes reported?
+
+### External Validity (Generalizability)
+**Questions:**
+- Is sample representative of target population?
+- Are inclusion/exclusion criteria too restrictive?
+- Is setting realistic?
+- Are results applicable to other populations?
+- Are effects consistent across subgroups?
+
+### Statistical Conclusion Validity
+**Questions:**
+- Was sample size adequate (power)?
+- Were statistical tests appropriate?
+- Were assumptions checked?
+- Were effect sizes and confidence intervals reported?
+- Were multiple comparisons addressed?
+- Was analysis prespecified?
+
+### Construct Validity (Measurement)
+**Questions:**
+- Were measures validated and reliable?
+- Was outcome defined clearly and appropriately?
+- Were assessors blinded?
+- Were exposures measured accurately?
+- Was timing of measurement appropriate?
+
+## Critical Appraisal Tools
+
+### For Different Study Types
+
+**RCTs:**
+- Cochrane Risk of Bias Tool
+- Jadad Scale
+- PEDro Scale (for trials in physical therapy)
+
+**Observational Studies:**
+- Newcastle-Ottawa Scale
+- ROBINS-I (Risk of Bias in Non-randomized Studies)
+
+**Diagnostic Studies:**
+- QUADAS-2 (Quality Assessment of Diagnostic Accuracy Studies)
+
+**Systematic Reviews:**
+- AMSTAR-2 (A Measurement Tool to Assess Systematic Reviews)
+
+**All Study Types:**
+- CASP Checklists (Critical Appraisal Skills Programme)
+
+## Domain-Specific Considerations
+
+### Basic Science Research
+**Hierarchy differs:**
+1. Multiple convergent lines of evidence
+2. Mechanistic understanding
+3. Reproducible experiments
+4. Established theoretical framework
+
+**Key considerations:**
+- Replication essential
+- Mechanistic plausibility
+- Consistency across model systems
+- Convergence of methods
+
+### Psychological Research
+**Additional concerns:**
+- Replication crisis
+- Publication bias particularly problematic
+- Small effect sizes often expected
+- Cultural context matters
+- Measures often indirect (self-report)
+
+**Strong evidence includes:**
+- Preregistered studies
+- Large samples
+- Multiple measures
+- Behavioral (not just self-report) outcomes
+- Cross-cultural replication
+
+### Epidemiology
+**Causal inference frameworks:**
+- Bradford Hill criteria
+- Rothman's causal pies
+- Directed Acyclic Graphs (DAGs)
+
+**Strong observational evidence:**
+- Dose-response relationships
+- Temporal consistency
+- Biological plausibility
