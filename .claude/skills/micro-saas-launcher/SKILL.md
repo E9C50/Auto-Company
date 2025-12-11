@@ -104,3 +104,109 @@ Day 7: Polish and bug fixes
 ```
 Day 1-2: Landing page
 Day 3: Email flows (welcome, etc.)
+Day 4: Legal (privacy, terms)
+Day 5: Final testing
+Day 6-7: Soft launch
+```
+
+### What to Skip in MVP
+- Perfect design (good enough is fine)
+- All features (one core feature only)
+- Scale optimization (worry later)
+- Custom auth (use a service)
+- Multiple pricing tiers (start simple)
+```
+
+### Pricing Strategy
+
+Pricing your micro-SaaS
+
+**When to use**: When setting prices
+
+```javascript
+## Pricing Strategy
+
+### Pricing Tiers for Micro-SaaS
+| Strategy | Best For |
+|----------|----------|
+| Single price | Simple tools, clear value |
+| Two tiers | Free/paid or Basic/Pro |
+| Three tiers | Most SaaS (Good/Better/Best) |
+| Usage-based | API products, variable use |
+
+### Starting Price Framework
+```
+What's the alternative cost? (Competitor or manual work)
+Your price = 20-50% of alternative cost
+
+Example:
+- Manual work takes 10 hours/month
+- 10 hours × $50/hour = $500 value
+- Price: $49-99/month
+```
+
+### Common Micro-SaaS Prices
+| Type | Price Range |
+|------|-------------|
+| Simple tool | $9-29/month |
+| Pro tool | $29-99/month |
+| B2B tool | $49-299/month |
+| Lifetime deal | 3-5x monthly |
+
+### Pricing Mistakes
+- Too cheap (undervalues, attracts bad customers)
+- Too complex (confuses buyers)
+- No free tier AND no trial (no way to try)
+- Charging too late (validate with money early)
+```
+
+## Anti-Patterns
+
+### ❌ Building in Secret
+
+**Why bad**: No feedback loop.
+Building wrong thing.
+Wasted time.
+Fear of shipping.
+
+**Instead**: Launch ugly MVP.
+Get feedback early.
+Build in public.
+Iterate based on users.
+
+### ❌ Feature Creep
+
+**Why bad**: Never ships.
+Dilutes focus.
+Confuses users.
+Delays revenue.
+
+**Instead**: One core feature first.
+Ship, then iterate.
+Let users tell you what's missing.
+Say no to most requests.
+
+### ❌ Pricing Too Low
+
+**Why bad**: Undervalues your work.
+Attracts price-sensitive customers.
+Hard to run a business.
+Can't afford growth.
+
+**Instead**: Price for value, not time.
+Start higher, discount if needed.
+B2B can pay more.
+Your time has value.
+
+## ⚠️ Sharp Edges
+
+| Issue | Severity | Solution |
+|-------|----------|----------|
+| Great product, no way to reach customers | high | ## Distribution First |
+| Building for market that can't/won't pay | high | ## Market Selection |
+| New signups leaving as fast as they come | high | ## Fixing Churn |
+| Pricing page confuses potential customers | medium | ## Simple Pricing |
+
+## Related Skills
+
+Works well with: `landing-page-design`, `backend`, `stripe`, `seo`
