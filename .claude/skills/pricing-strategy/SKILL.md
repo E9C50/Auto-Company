@@ -112,3 +112,116 @@ Ask: "As a customer uses more of [metric], do they get more value?"
 - **Support level** — Email → Priority → Dedicated
 - **Access** — API, SSO, custom branding
 
+**For detailed tier structures and persona-based packaging**: See [references/tier-structure.md](references/tier-structure.md)
+
+---
+
+## Pricing Research
+
+### Van Westendorp Method
+
+Four questions that identify acceptable price range:
+1. Too expensive (wouldn't consider)
+2. Too cheap (question quality)
+3. Expensive but might consider
+4. A bargain
+
+Analyze intersections to find optimal pricing zone.
+
+### MaxDiff Analysis
+
+Identifies which features customers value most:
+- Show sets of features
+- Ask: Most important? Least important?
+- Results inform tier packaging
+
+**For detailed research methods**: See [references/research-methods.md](references/research-methods.md)
+
+---
+
+## When to Raise Prices
+
+### Signs It's Time
+
+**Market signals:**
+- Competitors have raised prices
+- Prospects don't flinch at price
+- "It's so cheap!" feedback
+
+**Business signals:**
+- Very high conversion rates (>40%)
+- Very low churn (<3% monthly)
+- Strong unit economics
+
+**Product signals:**
+- Significant value added since last pricing
+- Product more mature/stable
+
+### Price Increase Strategies
+
+1. **Grandfather existing** — New price for new customers only
+2. **Delayed increase** — Announce 3-6 months out
+3. **Tied to value** — Raise price but add features
+4. **Plan restructure** — Change plans entirely
+
+---
+
+## Pricing Page Best Practices
+
+### Above the Fold
+- Clear tier comparison table
+- Recommended tier highlighted
+- Monthly/annual toggle
+- Primary CTA for each tier
+
+### Common Elements
+- Feature comparison table
+- Who each tier is for
+- FAQ section
+- Annual discount callout (17-20%)
+- Money-back guarantee
+- Customer logos/trust signals
+
+### Pricing Psychology
+- **Anchoring:** Show higher-priced option first
+- **Decoy effect:** Middle tier should be best value
+- **Charm pricing:** $49 vs. $50 (for value-focused)
+- **Round pricing:** $50 vs. $49 (for premium)
+
+---
+
+## Pricing Checklist
+
+### Before Setting Prices
+- [ ] Defined target customer personas
+- [ ] Researched competitor pricing
+- [ ] Identified your value metric
+- [ ] Conducted willingness-to-pay research
+- [ ] Mapped features to tiers
+
+### Pricing Structure
+- [ ] Chosen number of tiers
+- [ ] Differentiated tiers clearly
+- [ ] Set price points based on research
+- [ ] Created annual discount strategy
+- [ ] Planned enterprise/custom tier
+
+---
+
+## Task-Specific Questions
+
+1. What pricing research have you done?
+2. What's your current ARPU and conversion rate?
+3. What's your primary value metric?
+4. Who are your main pricing personas?
+5. Are you self-serve, sales-led, or hybrid?
+6. What pricing changes are you considering?
+
+---
+
+## Related Skills
+
+- **page-cro**: For optimizing pricing page conversion
+- **copywriting**: For pricing page copy
+- **marketing-psychology**: For pricing psychology principles
+- **ab-test-setup**: For testing pricing changes
