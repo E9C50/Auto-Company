@@ -138,3 +138,142 @@ Use for "Best [X]", "Top [X]", "[Number] ways to [X]" queries.
 ### 1. [Item Name]
 
 [Why it's included in 2-3 sentences with specific benefits]
+
+### 2. [Item Name]
+
+[Why it's included in 2-3 sentences with specific benefits]
+
+### 3. [Item Name]
+
+[Why it's included in 2-3 sentences with specific benefits]
+```
+
+---
+
+## Generative Engine Optimization (GEO) Patterns
+
+These patterns optimize content for citation by AI assistants like ChatGPT, Claude, Perplexity, and Gemini.
+
+### Statistic Citation Block
+
+Statistics increase AI citation rates by 15-30%. Always include sources.
+
+```markdown
+[Claim statement]. According to [Source/Organization], [specific statistic with number and timeframe]. [Context for why this matters].
+```
+
+**Example:**
+```markdown
+Mobile optimization is no longer optional for SEO success. According to Google's 2024 Core Web Vitals report, 70% of web traffic now comes from mobile devices, and pages failing mobile usability standards see 24% higher bounce rates. This makes mobile-first indexing a critical ranking factor.
+```
+
+### Expert Quote Block
+
+Named expert attribution adds credibility and increases citation likelihood.
+
+```markdown
+"[Direct quote from expert]," says [Expert Name], [Title/Role] at [Organization]. [1 sentence of context or interpretation].
+```
+
+**Example:**
+```markdown
+"The shift from keyword-driven search to intent-driven discovery represents the most significant change in SEO since mobile-first indexing," says Rand Fishkin, Co-founder of SparkToro. This perspective highlights why content strategies must evolve beyond traditional keyword optimization.
+```
+
+### Authoritative Claim Block
+
+Structure claims for easy AI extraction with clear attribution.
+
+```markdown
+[Topic] [verb: is/has/requires/involves] [clear, specific claim]. [Source] [confirms/reports/found] that [supporting evidence]. This [explains/means/suggests] [implication or action].
+```
+
+**Example:**
+```markdown
+E-E-A-T is the cornerstone of Google's content quality evaluation. Google's Search Quality Rater Guidelines confirm that trust is the most critical factor, stating that "untrustworthy pages have low E-E-A-T no matter how experienced, expert, or authoritative they may seem." This means content creators must prioritize transparency and accuracy above all other optimization tactics.
+```
+
+### Self-Contained Answer Block
+
+Create quotable, standalone statements that AI can extract directly.
+
+```markdown
+**[Topic/Question]**: [Complete, self-contained answer that makes sense without additional context. Include specific details, numbers, or examples in 2-3 sentences.]
+```
+
+**Example:**
+```markdown
+**Ideal blog post length for SEO**: The optimal length for SEO blog posts is 1,500-2,500 words for competitive topics. This range allows comprehensive topic coverage while maintaining reader engagement. HubSpot research shows long-form content earns 77% more backlinks than short articles, directly impacting search rankings.
+```
+
+### Evidence Sandwich Block
+
+Structure claims with evidence for maximum credibility.
+
+```markdown
+[Opening claim statement].
+
+Evidence supporting this includes:
+- [Data point 1 with source]
+- [Data point 2 with source]
+- [Data point 3 with source]
+
+[Concluding statement connecting evidence to actionable insight].
+```
+
+---
+
+## Domain-Specific GEO Tactics
+
+Different content domains benefit from different authority signals.
+
+### Technology Content
+- Emphasize technical precision and correct terminology
+- Include version numbers and dates for software/tools
+- Reference official documentation
+- Add code examples where relevant
+
+### Health/Medical Content
+- Cite peer-reviewed studies with publication details
+- Include expert credentials (MD, RN, etc.)
+- Note study limitations and context
+- Add "last reviewed" dates
+
+### Financial Content
+- Reference regulatory bodies (SEC, FTC, etc.)
+- Include specific numbers with timeframes
+- Note that information is educational, not advice
+- Cite recognized financial institutions
+
+### Legal Content
+- Cite specific laws, statutes, and regulations
+- Reference jurisdiction clearly
+- Include professional disclaimers
+- Note when professional consultation is advised
+
+### Business/Marketing Content
+- Include case studies with measurable results
+- Reference industry research and reports
+- Add percentage changes and timeframes
+- Quote recognized thought leaders
+
+---
+
+## Voice Search Optimization
+
+Voice queries are conversational and question-based. Optimize for these patterns:
+
+### Question Formats for Voice
+- "What is..."
+- "How do I..."
+- "Where can I find..."
+- "Why does..."
+- "When should I..."
+- "Who is..."
+
+### Voice-Optimized Answer Structure
+- Lead with direct answer (under 30 words ideal)
+- Use natural, conversational language
+- Avoid jargon unless targeting expert audience
+- Include local context where relevant
+- Structure for single spoken response
