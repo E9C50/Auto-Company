@@ -152,3 +152,157 @@ Native secrets are stored unencrypted in etcd by default...
 
 ### Schema Markup for Rich Results
 
+| Rich Result | Schema Type | Key Properties |
+|-------------|-------------|----------------|
+| **FAQ** | FAQPage | mainEntity.Question, Answer |
+| **How-To** | HowTo | step, tool, supply, estimatedCost |
+| **Article** | Article | headline, author, datePublished |
+| **Product** | Product | name, offers, aggregateRating |
+| **Review** | Review | reviewRating, author |
+| **Breadcrumb** | BreadcrumbList | itemListElement |
+| **Software** | SoftwareApplication | name, offers, operatingSystem |
+
+### FAQ Schema Implementation
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is secrets management?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Secrets management is the practice of securely storing and managing sensitive credentials like API keys, passwords, and certificates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is secrets management important?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Secrets management prevents credential leaks, enables compliance with security standards, and provides audit trails for sensitive access."
+      }
+    }
+  ]
+}
+```
+
+### HowTo Schema Implementation
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Rotate API Keys in Kubernetes",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "0"
+  },
+  "totalTime": "PT15M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Generate new key",
+      "text": "Create a new API key in your secrets manager"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Deploy to staging",
+      "text": "Update the Kubernetes secret in your test environment"
+    }
+  ]
+}
+```
+
+### Zero-Click Consideration
+
+Some SERP features reduce clicks:
+
+| Feature | Click Risk | Strategy |
+|---------|------------|----------|
+| **Featured Snippet** | High — answer visible | Include CTA, tease more value |
+| **Knowledge Panel** | Very High — all info shown | Focus on brand, not traffic |
+| **Calculator/Converter** | Very High — utility in SERP | Don't target these queries |
+| **Direct Answer** | Very High — no click needed | Target questions needing depth |
+
+### Countering Zero-Click
+
+```
+For featured snippets that might steal clicks:
+
+1. Answer the question (to win the snippet)
+2. But tease additional value:
+
+"Secrets management is the practice of securely storing
+credentials like API keys. While basic storage is
+straightforward, production environments require rotation,
+access controls, and audit logging—covered in our step-by-step
+implementation guide below."
+
+✓ Answers the question (wins snippet)
+✓ Hints at more value (drives clicks)
+```
+
+### Video SERP Optimization
+
+| Element | Optimization |
+|---------|--------------|
+| **Title** | Include target keyword, compelling hook |
+| **Description** | First 150 chars matter, include keyword |
+| **Chapters** | Add timestamps for key sections |
+| **Transcript** | Upload or enable auto-captions |
+| **Thumbnail** | Custom, high contrast, faces perform well |
+| **Tags** | Relevant keywords, variations |
+
+### Image Pack Optimization
+
+| Element | Best Practice |
+|---------|---------------|
+| **File name** | keyword-description.png |
+| **Alt text** | Descriptive, includes keyword naturally |
+| **Surrounding text** | Contextual content near image |
+| **Image size** | High-res but compressed |
+| **Original images** | Unique > stock photos |
+| **Structured data** | ImageObject schema |
+
+### SERP Feature Tracking
+
+| What to Track | Tool | Why |
+|---------------|------|-----|
+| **Snippet ownership** | Ahrefs, Semrush | Know when you win/lose |
+| **SERP feature presence** | Semrush, Moz | Opportunity identification |
+| **CTR by feature** | Search Console | Measure actual impact |
+| **Position 0 traffic** | Analytics + rank tracking | Isolate snippet performance |
+
+### SERP Analysis Process
+
+```
+Before creating content:
+
+1. Search the target keyword
+2. Note all SERP features present
+3. Analyze current snippet holder:
+   └── What format (paragraph, list, table)?
+   └── What's the word count?
+   └── What question does it answer?
+4. Identify gaps in current snippet
+5. Structure content to win the feature
+
+Don't just match — exceed what's there
+```
+
+### Anti-Patterns
+
+- **Ignoring SERP features** — Optimizing only for blue links
+- **Wrong format** — Paragraph answer when list ranks
+- **Answer too long** — 200 words when snippet needs 50
+- **Buried answers** — Answer in paragraph 5, not after H2
+- **Missing schema** — No structured data for eligible pages
+- **Chasing zero-click** — Targeting queries that never get clicks
+- **Generic FAQs** — Schema for questions no one asks
+- **Over-optimization** — Every page has FAQ schema (spam signal)
+- **Not tracking** — No visibility into snippet wins/losses
+- **Ignoring PAA** — Free keyword research sitting in SERP
