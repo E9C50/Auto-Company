@@ -155,3 +155,159 @@ grep -r "text-\(red\|yellow\|blue\|green\|purple\|orange\|pink\|emerald\)-[0-9]"
 # Search for border colors
 grep -r "border-\(red\|yellow\|blue\|green\|purple\|orange\|pink\|emerald\)-[0-9]" src/
 ```
+
+### Step 3: Replace Component by Component
+
+Start with high-impact components:
+1. Buttons
+2. Badges
+3. Alert boxes
+4. Status indicators
+5. Cards
+
+### Step 4: Test Both Themes
+
+After each component:
+- [ ] Check light mode appearance
+- [ ] Check dark mode appearance
+- [ ] Verify text contrast
+- [ ] Test hover/active states
+
+---
+
+## Example: Badge Component
+
+❌ **Before:**
+```tsx
+const severityConfig = {
+  critical: {
+    color: 'text-red-500',
+    bg: 'bg-red-500/10',
+    border: 'border-red-500/20',
+  },
+  warning: {
+    color: 'text-yellow-500',
+    bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
+  },
+  info: {
+    color: 'text-blue-500',
+    bg: 'bg-blue-500/10',
+    border: 'border-blue-500/20',
+  }
+}
+```
+
+✅ **After:**
+```tsx
+const severityConfig = {
+  critical: {
+    color: 'text-destructive',
+    bg: 'bg-destructive/10',
+    border: 'border-destructive/20',
+  },
+  warning: {
+    color: 'text-warning',
+    bg: 'bg-warning/10',
+    border: 'border-warning/20',
+  },
+  info: {
+    color: 'text-info',
+    bg: 'bg-info/10',
+    border: 'border-info/20',
+  }
+}
+```
+
+---
+
+## Testing Checklist
+
+After migration:
+- [ ] All severity levels (critical/warning/info) visually distinct
+- [ ] Text has proper contrast in both light and dark modes
+- [ ] No hardcoded color classes remain
+- [ ] Hover states work correctly
+- [ ] Gradients render smoothly
+- [ ] Icons are visible and colored correctly
+- [ ] Borders are visible
+- [ ] No visual regressions
+
+---
+
+## Verification Commands
+
+```bash
+# Should return 0 results when migration complete
+grep -r "text-red-[0-9]" src/components/
+grep -r "bg-blue-[0-9]" src/components/
+grep -r "border-green-[0-9]" src/components/
+
+# Verify semantic colors are used
+grep -r "bg-destructive" src/components/
+grep -r "text-success" src/components/
+```
+
+---
+
+## Performance Impact
+
+**Before:** Every component has `dark:` variants
+```tsx
+<div className="bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+```
+
+**After:** Single class, CSS handles switching
+```tsx
+<div className="bg-info/10 text-info border-info/30">
+```
+
+**Result:**
+- 60% fewer CSS classes in markup
+- Smaller HTML payload
+- Faster rendering
+- Easier to maintain
+
+---
+
+## Common Pitfalls
+
+### 1. Forgetting to Map in @theme inline
+
+Variables defined in `:root` but not mapped → utilities don't exist
+
+### 2. Wrong Opacity Syntax
+
+❌ `bg-success-10` (doesn't work)
+✅ `bg-success/10` (correct)
+
+### 3. Mixing Approaches
+
+Don't mix hardcoded and semantic in same component - choose one approach.
+
+### 4. Not Testing Dark Mode
+
+Always test both themes during migration.
+
+---
+
+## Rollback Plan
+
+If migration causes issues:
+
+1. Keep original components in git history
+2. Use feature flags to toggle new theme
+3. Test with subset of users first
+4. Have monitoring for visual regressions
+
+---
+
+## Further Customization
+
+After migration, you can easily:
+- Add new semantic colors
+- Create theme variants (high contrast, etc.)
+- Support multiple brand themes
+- Implement user-selectable color schemes
+
+All by editing CSS variables - no component changes needed!
