@@ -314,3 +314,161 @@ Extract columns/fields from output.
 ```
 cut -f <n>           # field n (1-indexed)
 cut -f <n,m>         # fields n and m
+cut -d <delim>       # delimiter (default: tab)
+cut -c <range>       # character positions
+```
+
+**Example:**
+```
+ls -l | cut -f 1     # just link text, no URLs
+```
+
+**Pipeable:** Yes
+
+---
+
+### `tr`
+
+Translate/transform characters.
+
+**Syntax:**
+```
+tr <set1> <set2>     # replace set1 chars with set2
+tr -d <set>          # delete characters
+tr -s <set>          # squeeze repeated chars
+tr '[:upper:]' '[:lower:]'  # lowercase
+```
+
+**Pipeable:** Yes
+
+---
+
+### `sed`
+
+Stream editor for transformations.
+
+**Syntax:**
+```
+sed 's/old/new/'     # replace first occurrence
+sed 's/old/new/g'    # replace all
+sed -n '5,10p'       # print lines 5-10
+sed '/pattern/d'     # delete matching lines
+```
+
+**Pipeable:** Yes
+
+---
+
+### `source`
+
+View raw HTML source.
+
+**Syntax:**
+```
+source               # full HTML
+source | head 50     # first 50 lines
+source -l            # with line numbers
+```
+
+---
+
+### `dom`
+
+Show DOM tree structure.
+
+**Syntax:**
+```
+dom                  # full tree
+dom <selector>       # subtree from selector
+dom -d <n>           # depth limit
+dom --tags           # tag names only
+```
+
+**Output:**
+```
+html
+├── head
+│   ├── title
+│   ├── meta
+│   └── link
+└── body
+    ├── header
+    │   └── nav
+    ├── main
+    │   ├── article
+    │   └── aside
+    └── footer
+```
+
+---
+
+## Prefetching & Crawling
+
+### `prefetch`
+
+Control eager link crawling. By default, websh automatically prefetches visible links 1-2 layers deep in the background after you navigate to a page.
+
+**Syntax:**
+```
+prefetch                     # show status
+prefetch on                  # enable eager crawl
+prefetch off                 # disable eager crawl
+prefetch <url>               # manually prefetch a URL
+prefetch --depth <n>         # set crawl depth (default: 2)
+prefetch --stop              # stop current crawl
+```
+
+**Examples:**
+```
+prefetch                     # check crawl progress
+prefetch off                 # disable for slow connections
+prefetch https://example.com # manually queue URL
+```
+
+**Status output:**
+```
+Eager crawl: enabled
+Depth: 2, Same domain: yes, Max per page: 20
+
+Current crawl:
+  Origin: https://news.ycombinator.com
+  Progress: Layer 1 - 15/20 complete
+  Queued: 42 URLs for Layer 2
+```
+
+---
+
+### `crawl`
+
+Explicitly crawl a URL to a specified depth.
+
+**Syntax:**
+```
+crawl <url>                  # crawl from URL
+crawl --depth <n>            # depth (default: 2)
+crawl --all                  # include external links
+crawl --follow <pattern>     # only follow matching URLs
+crawl --max <n>              # max pages to fetch
+```
+
+**Examples:**
+```
+crawl https://docs.example.com --depth 3
+crawl https://api.example.com --follow "/docs/*"
+crawl https://blog.com --max 50
+```
+
+**Difference from prefetch:**
+- `prefetch` is automatic and runs in background after `cd`
+- `crawl` is manual and can go deeper / wider
+
+---
+
+### `queue`
+
+Show the crawl queue.
+
+**Syntax:**
+```
+queue                        # show queue status
+queue -l                     # long format with all URLs
