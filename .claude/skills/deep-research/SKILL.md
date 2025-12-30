@@ -284,3 +284,146 @@ Before considering a section complete, verify:
 - [ ] **Evidence-rich**: Specific data points, statistics, quotes (not vague statements)
 - [ ] **Citation density**: Major claims cited within same sentence
 
+**If ANY check fails:** Regenerate the section before moving to next.
+
+**Source Attribution Standards (Critical for Preventing Fabrication):**
+- **Immediate citation**: Every factual claim followed by [N] citation in same sentence
+- **Quote sources directly**: Use "According to [1]..." or "[1] reports..." for factual statements
+- **Distinguish fact from synthesis**:
+  - ✅ GOOD: "Mortality decreased 23% (p<0.01) in the treatment group [1]."
+  - ❌ BAD: "Studies show mortality improved significantly."
+- **No vague attributions**:
+  - ❌ NEVER: "Research suggests...", "Studies show...", "Experts believe..."
+  - ✅ ALWAYS: "Smith et al. (2024) found..." [1], "According to FDA data..." [2]
+- **Label speculation explicitly**:
+  - ✅ GOOD: "This suggests a potential mechanism..." (analysis, not fact)
+  - ❌ BAD: "The mechanism is..." (presented as fact without citation)
+- **Admit uncertainty**:
+  - ✅ GOOD: "No sources found addressing X directly."
+  - ❌ BAD: Fabricating a citation to fill the gap
+- **Template pattern**: "[Specific claim with numbers/data] [Citation]. [Analysis/implication]."
+
+**Deliver to user:**
+1. Executive summary (inline in chat)
+2. Organized folder path (e.g., "All files saved to: ~/Documents/Psilocybin_Research_20251104/")
+3. Confirmation of all three formats generated:
+   - Markdown (source)
+   - HTML (McKinsey-style, opened in browser)
+   - PDF (professional print, opened in viewer)
+4. Source quality assessment summary (source count)
+5. Next steps (if relevant)
+
+**Generation Workflow: Progressive File Assembly (Unlimited Length)**
+
+**Phase 8.1: Setup**
+```bash
+# Extract topic slug from research question
+# Create folder: ~/Documents/[TopicName]_Research_[YYYYMMDD]/
+mkdir -p ~/Documents/[folder_name]
+
+# Create initial markdown file with frontmatter
+# File path: [folder]/research_report_[YYYYMMDD]_[slug].md
+```
+
+**Phase 8.2: Progressive Section Generation**
+
+**CRITICAL STRATEGY:** Generate and write each section individually to file using Write/Edit tools.
+This allows unlimited report length while keeping each generation manageable.
+
+**OUTPUT TOKEN LIMIT SAFEGUARD (CRITICAL - Claude Code Default: 32K):**
+
+Claude Code default limit: 32,000 output tokens (≈24,000 words total per skill execution)
+This is a HARD LIMIT and cannot be changed within the skill.
+
+**What this means:**
+- Total output (your text + all tool call content) must be <32,000 tokens
+- 32,000 tokens ≈ 24,000 words max
+- Leave safety margin: Target ≤20,000 words total output
+
+**Realistic report sizes per mode:**
+- Quick mode: 2,000-4,000 words ✅ (well under limit)
+- Standard mode: 4,000-8,000 words ✅ (comfortably under limit)
+- Deep mode: 8,000-15,000 words ✅ (achievable with care)
+- UltraDeep mode: 15,000-20,000 words ⚠️ (at limit, monitor closely)
+
+**For reports >20,000 words:**
+User must run skill multiple times:
+- Run 1: "Generate Part 1 (sections 1-6)" → saves to part1.md
+- Run 2: "Generate Part 2 (sections 7-12)" → saves to part2.md
+- User manually combines or asks Claude to merge files
+
+**Auto-Continuation Strategy (TRUE Unlimited Length):**
+
+When report exceeds 18,000 words in single run:
+1. Generate sections 1-10 (stay under 18K words)
+2. Save continuation state file with context preservation
+3. Spawn continuation agent via Task tool
+4. Continuation agent: Reads state → Generates next batch → Spawns next agent if needed
+5. Chain continues recursively until complete
+
+This achieves UNLIMITED length while respecting 32K limit per agent
+
+**Initialize Citation Tracking:**
+```
+citations_used = []  # Maintain this list in working memory throughout
+```
+
+**Section Generation Loop:**
+
+**Pattern:** Generate section content → Use Write/Edit tool with that content → Move to next section
+Each Write/Edit call contains ONE section (≤2,000 words per call)
+
+1. **Executive Summary** (200-400 words)
+   - Generate section content
+   - Tool: Write(file, content=frontmatter + Executive Summary)
+   - Track citations used
+   - Progress: "✓ Executive Summary"
+
+2. **Introduction** (400-800 words)
+   - Generate section content
+   - Tool: Edit(file, old=last_line, new=old + Introduction section)
+   - Track citations used
+   - Progress: "✓ Introduction"
+
+3. **Finding 1** (600-2,000 words)
+   - Generate complete finding
+   - Tool: Edit(file, append Finding 1)
+   - Track citations used
+   - Progress: "✓ Finding 1"
+
+4. **Finding 2** (600-2,000 words)
+   - Generate complete finding
+   - Tool: Edit(file, append Finding 2)
+   - Track citations used
+   - Progress: "✓ Finding 2"
+
+... Continue for ALL findings (each finding = one Edit tool call, ≤2,000 words)
+
+**CRITICAL:** If you have 10 findings × 1,500 words each = 15,000 words of findings
+This is OKAY because each Edit call is only 1,500 words (under 2,000 word limit per tool call)
+The FILE grows to 15,000 words, but no single tool call exceeds limits
+
+4. **Synthesis & Insights**
+   - Generate: Novel insights beyond source statements (as long as needed for synthesis)
+   - Tool: Edit (append to file)
+   - Track: Extract citations, append to citations_used
+   - Progress: "Generated Synthesis ✓"
+
+5. **Limitations & Caveats**
+   - Generate: Counterevidence, gaps, uncertainties (appropriate depth)
+   - Tool: Edit (append to file)
+   - Track: Extract citations, append to citations_used
+   - Progress: "Generated Limitations ✓"
+
+6. **Recommendations**
+   - Generate: Immediate actions, next steps, research needs (appropriate depth)
+   - Tool: Edit (append to file)
+   - Track: Extract citations, append to citations_used
+   - Progress: "Generated Recommendations ✓"
+
+7. **Bibliography (CRITICAL - ALL Citations)**
+   - Generate: COMPLETE bibliography with EVERY citation from citations_used list
+   - Format: [1], [2], [3]... [N] - each citation gets full entry
+   - Verification: Check citations_used list - if list contains [1] through [73], generate all 73 entries
+   - NO ranges ([1-50]), NO placeholders ("Additional citations"), NO truncation
+   - Tool: Edit (append to file)
