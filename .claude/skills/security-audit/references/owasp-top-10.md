@@ -253,3 +253,130 @@ app.use((err, req, res, next) => {
   console.error(err); // Log internally
   res.status(500).json({ 
     error: 'Internal server error',
+    requestId: req.id
+  });
+});
+
+// Restrictive CORS
+app.use(cors({ 
+  origin: ['https://app.example.com'],
+  credentials: true
+}));
+
+// Security headers
+app.use(helmet());
+```
+
+---
+
+## A06:2021 – Vulnerable Components
+
+### Description
+Using components with known vulnerabilities.
+
+### Detection
+
+```bash
+# npm
+npm audit
+npm audit --json | jq '.vulnerabilities | keys[]'
+
+# Python
+pip-audit
+safety check
+
+# General
+snyk test
+```
+
+### Common Issues
+
+| Package | Vulnerability | Fix |
+|---------|---------------|-----|
+| lodash <4.17.21 | Prototype pollution | Update |
+| express <4.17.3 | ReDoS | Update |
+| axios <0.21.1 | SSRF | Update |
+| jsonwebtoken <9.0.0 | Algorithm confusion | Update |
+
+---
+
+## A07:2021 – Auth Failures
+
+### Description
+Confirmation of user identity, authentication, and session management.
+
+### Detection Patterns
+
+```bash
+# Weak JWT verification
+grep -rn "verify.*algorithms\|algorithm.*none" --include="*.ts"
+
+# Session fixation
+grep -rn "req\.session\s*=" --include="*.ts"
+
+# No logout invalidation
+grep -rn "logout" -A5 --include="*.ts" | grep -v "destroy\|invalidate"
+```
+
+### Vulnerable Code
+
+```typescript
+// JWT without algorithm restriction
+jwt.verify(token, secret); // ❌ Accepts 'none' algorithm
+
+// No session regeneration
+app.post('/login', async (req, res) => {
+  req.session.userId = user.id; // ❌ Session fixation
+});
+
+// Logout without invalidation
+app.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ success: true }); // ❌ Token still valid
+});
+```
+
+### Fixed Code
+
+```typescript
+// Explicit algorithm
+jwt.verify(token, secret, { algorithms: ['HS256'] });
+
+// Session regeneration
+app.post('/login', async (req, res) => {
+  req.session.regenerate((err) => {
+    req.session.userId = user.id;
+    res.json({ success: true });
+  });
+});
+
+// Token invalidation
+app.post('/logout', async (req, res) => {
+  await TokenBlacklist.add(req.token, req.user.tokenExp);
+  res.json({ success: true });
+});
+```
+
+---
+
+## A08:2021 – Software and Data Integrity
+
+### Description
+Code and infrastructure that does not protect against integrity violations.
+
+### Detection
+
+```bash
+# No integrity checks on external resources
+grep -rn "<script src=" --include="*.html" | grep -v "integrity="
+
+# Unsafe deserialization
+grep -rn "JSON\.parse\|unserialize\|pickle\.load" --include="*.ts" --include="*.py"
+
+# CI/CD pipeline vulnerabilities (manual review)
+```
+
+### Vulnerable Code
+
+```html
+<!-- No subresource integrity -->
