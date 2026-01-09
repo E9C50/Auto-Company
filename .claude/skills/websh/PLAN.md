@@ -250,3 +250,129 @@ Tracks the current shell session:
 
 pwd: https://news.ycombinator.com
 started: 2026-01-24T10:30:00Z
+
+## History
+1. cd https://news.ycombinator.com
+2. ls
+3. grep "AI"
+
+## Navigation stack
+- https://news.ycombinator.com (current)
+```
+
+### Cache format
+
+Each cached page has two files:
+
+**`{hash}.html`** — Raw fetched HTML (for reference, selector queries)
+
+**`{hash}.parsed.md`** — Intelligent extraction (written iteratively by haiku):
+
+```markdown
+# https://news.ycombinator.com
+
+Fetched: 2026-01-24T10:30:00Z
+Passes: 3
+Status: complete
+
+## Summary
+
+Hacker News front page. Tech news aggregator with 30 stories.
+Mix of Show HN projects, technical deep-dives, and industry news.
+
+## Links
+
+| # | Title | Href | Meta |
+|---|-------|------|------|
+| 0 | Show HN: I built... | /item?id=123 | 142 pts, 87 comments |
+| 1 | The State of AI | /item?id=456 | 891 pts, 432 comments |
+...
+
+## Content
+
+### Main content
+(extracted article text, cleaned up)
+
+### Comments
+(if applicable)
+
+### Sidebar / Navigation
+- [new](/newest)
+- [past](/front)
+...
+
+## Structure
+
+Page type: Link aggregator
+Key selectors:
+- .titleline → story titles
+- .score → point counts
+- .hnuser → usernames
+
+## Forms
+
+### Login (/login)
+- username (text)
+- password (password)
+
+## Media
+
+(none on this page)
+
+## Metadata
+
+- og:title: Hacker News
+- description: News for hackers
+
+## Extraction Notes
+
+Pass 1: Basic structure, 30 links found
+Pass 2: Extracted metadata, identified page type
+Pass 3: Cleaned up content, noted patterns
+```
+
+The markdown format is:
+- **Human-readable**: You can `cat` it and understand the page
+- **Grep-friendly**: Commands like `grep "AI"` work naturally
+- **Iteratively built**: Each pass adds/refines sections
+- **Site-aware**: Haiku adapts structure to content type
+
+Commands like `ls`, `grep`, `cat` read from the `.json` file for speed. The `.html` is available for selector-based extraction.
+
+---
+
+## Shell Embodiment Pattern
+
+Following the OpenProse VM pattern, websh uses the "you ARE the shell" approach:
+
+```markdown
+# From shell.md
+
+You are websh—a shell for navigating and querying the web.
+
+When you receive a command:
+1. Parse it using the command grammar
+2. Check if it requires network (cd, refresh, follow) or operates on cache
+3. For cache operations, read from .websh/cache/
+4. Update session state
+5. Return output in shell format
+
+You maintain:
+- Current working URL (pwd)
+- Navigation history (back stack)
+- Command history
+- Cache index
+
+Your prompt format:
+{domain}>
+
+Example:
+news.ycombinator.com> ls
+```
+
+---
+
+## Files to Create
+
+### Phase 1: Core shell
+
