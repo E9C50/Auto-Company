@@ -218,3 +218,113 @@ When same topic is analyzed from different fields:
 ---
 
 ## Practical Comparison
+
+For how-to content from multiple sources:
+
+```markdown
+# Implementation Comparison: [Skill/Method]
+
+## Common Steps (All Sources Agree)
+1. [Universally recommended step]
+2. [Universally recommended step]
+
+## Variations
+
+| Aspect | Source 1 Approach | Source 2 Approach | Source 3 Approach |
+|--------|-------------------|-------------------|-------------------|
+| [Aspect 1] | [Method] | [Method] | [Method] |
+| [Aspect 2] | [Method] | [Method] | [Method] |
+| [Aspect 3] | [Method] | [Method] | [Method] |
+
+## User Reviews/Results
+
+| Source | Reported Success Rate | Common Feedback | My Assessment |
+|--------|----------------------|-----------------|---------------|
+| Source 1 | [X%] | [What users say] | [Credibility] |
+| Source 2 | [Y%] | [What users say] | [Credibility] |
+| Source 3 | [Z%] | [What users say] | [Credibility] |
+
+## Personalized Recommendation
+For someone like me ([my context]):
+- Use [Source X's method] for [reason]
+- Skip [Source Y's suggestion] because [reason]
+- Test [Source Z's variation] if [condition]
+```
+
+---
+
+## Conflict Resolution Template
+
+When sources directly contradict:
+
+```markdown
+# Resolving Contradiction: [Specific Claim]
+
+## The Contradiction
+**Source 1 claims:** [Statement]
+**Source 2 claims:** [Opposite statement]
+
+## Investigating the Conflict
+
+### Possible Reasons for Disagreement
+
+1. **Different Definitions**
+   - Does Source 1 define [term] as [X]?
+   - Does Source 2 define [term] as [Y]?
+   - → Not actually contradicting if talking about different things
+
+2. **Different Contexts**
+   - Source 1 context: [Time/place/population]
+   - Source 2 context: [Time/place/population]
+   - → Both could be right in their contexts
+
+3. **Different Evidence**
+   - Source 1 relies on: [Evidence type]
+   - Source 2 relies on: [Evidence type]
+   - → Quality difference explains disagreement
+
+4. **Different Values/Goals**
+   - Source 1 optimizes for: [Goal]
+   - Source 2 optimizes for: [Goal]
+   - → Different priorities lead to different conclusions
+
+5. **One is Wrong**
+   - [Analysis of which source has flawed reasoning]
+
+### Resolution
+[Which source is more reliable for this specific claim and why]
+OR
+[How both can be true depending on context]
+OR
+[This remains unresolved; need more evidence]
+```
+
+---
+
+## Usage Guidelines
+
+**When to use comparison matrices:**
+- Reading 3+ sources on same topic
+- Encountering conflicting information
+- Trying to synthesize best practices
+- Building comprehensive understanding
+- Making informed decisions
+
+**How to populate:**
+1. Read each source independently first (use standard note template)
+2. Identify common themes/questions across sources
+3. Create matrix structure based on what you're comparing
+4. Fill in each source's position
+5. Analyze patterns and synthesize
+
+**Common mistakes:**
+- ❌ Forcing false equivalence (not all views equally valid)
+- ❌ Cherry-picking to support predetermined view
+- ❌ Ignoring publication quality/expertise differences
+- ❌ Missing the forest for the trees (over-detailed comparison)
+
+**Best practices:**
+- ✅ Weight sources by credibility
+- ✅ Look for convergent evidence
+- ✅ Note what's settled vs. debated
+- ✅ Identify your own biases in interpretation
