@@ -266,3 +266,137 @@ The data could also mean:
 **Assumptions:** [What they take as given]
 
 ### [Source 2] Position  
+**Core claim:** [What they argue]
+**Key evidence:** [Main support]
+**Assumptions:** [What they take as given]
+
+## Points of Agreement
+1. [Overlap 1]
+2. [Overlap 2]
+
+## Points of Divergence
+| Aspect | Source 1 | Source 2 |
+|--------|----------|----------|
+| [Dimension] | [View] | [View] |
+| [Dimension] | [View] | [View] |
+
+## Analysis
+**Why they disagree:**
+- Different values: [Explanation]
+- Different data: [Explanation]  
+- Different frames: [Explanation]
+
+**Who's more convincing and why:**
+[Assessment with reasoning]
+
+**Synthesis:**
+[Can we integrate both views? Middle ground?]
+```
+
+---
+
+## 6. Quick Reference Card
+
+```markdown
+# Quick Ref: [Topic]
+
+## The Concept
+[2-3 sentence explanation]
+
+## When to Use
+- ✅ [Situation 1]
+- ✅ [Situation 2]
+- ❌ NOT for [Situation 3]
+
+## Key Steps
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Remember
+💡 [Most important insight]
+⚠️ [Common mistake to avoid]
+
+## Example
+[One concrete scenario showing application]
+```
+
+---
+
+## 7. Feynman Technique Template
+
+```markdown
+# Teach [Concept]
+
+## Explain Like I'm 5
+[Simplest possible explanation, no jargon]
+
+## Key Analogy
+[Concept] is like [everyday thing] because [reasoning]
+
+## The Steps (Simple)
+1. [First, you...]
+2. [Then, you...]
+3. [Finally, you...]
+
+## Common Confusion
+**People often think:** [Misconception]
+**But actually:** [Correction]
+**Why the confusion:** [Reason]
+
+## Test Questions
+1. [Question to check understanding]
+2. [Question to check understanding]
+
+## Gaps I Found
+While explaining, I realized I don't fully understand:
+- [Gap 1]
+- [Gap 2]
+
+**Need to review:** [Specific sections/concepts]
+```
+
+---
+
+## 8. Decision Matrix Template
+
+```markdown
+# Should I [Action Based on Reading]?
+
+## Options
+1. [Option A - fully implement]
+2. [Option B - partially implement]
+3. [Option C - don't implement]
+
+## Evaluation Criteria
+
+| Criterion | Weight | Option A | Option B | Option C |
+|-----------|--------|----------|----------|----------|
+| [Impact] | 40% | 8/10 | 5/10 | 1/10 |
+| [Effort] | 30% | 3/10 | 7/10 | 10/10 |
+| [Risk] | 20% | 6/10 | 8/10 | 10/10 |
+| [Alignment] | 10% | 9/10 | 7/10 | 2/10 |
+| **Total** | | **X.X** | **X.X** | **X.X** |
+
+## Decision
+[Chosen option] because [reasoning]
+
+## Implementation Plan
+[If proceeding, link to practical application template]
+```
+
+---
+
+## Usage Guide
+
+**For Different Goals:**
+
+- **Just learning:** Use Template #1 (Standard Notes)
+- **Deep understanding:** Use Template #2 (Concept Map) + #7 (Feynman)
+- **Critical evaluation:** Use Template #3 (Argument Analysis)
+- **Taking action:** Use Template #4 (Application Plan)
+- **Comparing sources:** Use Template #5 (Compare & Contrast)
+- **Quick reference:** Use Template #6 (Reference Card)
+- **Making decisions:** Use Template #8 (Decision Matrix)
+
+**Combine as needed:** Many analyses benefit from multiple templates.
