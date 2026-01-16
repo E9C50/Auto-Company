@@ -218,3 +218,113 @@ def _convert_tables(html: str) -> str:
                 # Skip separator row
                 continue
             else:
+                # Data row
+                cells = [cell.strip() for cell in line.split('|')[1:-1]]
+                result.append('<tr>')
+                for cell in cells:
+                    result.append(f'<td>{cell}</td>')
+                result.append('</tr>')
+        else:
+            if in_table:
+                result.append('</tbody></table>')
+                in_table = False
+            result.append(line)
+
+    if in_table:
+        result.append('</tbody></table>')
+
+    return '\n'.join(result)
+
+
+def _convert_paragraphs(html: str) -> str:
+    """Wrap non-HTML lines in paragraph tags"""
+    lines = html.split('\n')
+    result = []
+    in_paragraph = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Skip empty lines
+        if not stripped:
+            if in_paragraph:
+                result.append('</p>')
+                in_paragraph = False
+            result.append(line)
+            continue
+
+        # Skip lines that are already HTML tags
+        if (stripped.startswith('<') and stripped.endswith('>')) or \
+           stripped.startswith('</') or \
+           '<h' in stripped or '<div' in stripped or '<ul' in stripped or \
+           '<ol' in stripped or '<li' in stripped or '<table' in stripped or \
+           '</div>' in stripped or '</ul>' in stripped or '</ol>' in stripped:
+            if in_paragraph:
+                result.append('</p>')
+                in_paragraph = False
+            result.append(line)
+            continue
+
+        # Regular text line - wrap in paragraph
+        if not in_paragraph:
+            result.append('<p>' + line)
+            in_paragraph = True
+        else:
+            result.append(line)
+
+    if in_paragraph:
+        result.append('</p>')
+
+    return '\n'.join(result)
+
+
+def _close_sections(html: str) -> str:
+    """Close all open section divs"""
+    # Count open and closed divs
+    open_divs = html.count('<div class="section">')
+    closed_divs = html.count('</div>')
+
+    # Add closing divs for sections
+    # Each section should be closed before the next section starts
+    lines = html.split('\n')
+    result = []
+    section_open = False
+
+    for i, line in enumerate(lines):
+        if '<div class="section">' in line:
+            if section_open:
+                result.append('</div>')  # Close previous section
+            section_open = True
+        result.append(line)
+
+    # Close final section if still open
+    if section_open:
+        result.append('</div>')
+
+    return '\n'.join(result)
+
+
+def main():
+    """Test the converter with a sample markdown file"""
+    import sys
+
+    if len(sys.argv) < 2:
+        print("Usage: python md_to_html.py <markdown_file>")
+        sys.exit(1)
+
+    md_file = Path(sys.argv[1])
+    if not md_file.exists():
+        print(f"Error: File {md_file} not found")
+        sys.exit(1)
+
+    markdown_text = md_file.read_text()
+    content_html, bib_html = convert_markdown_to_html(markdown_text)
+
+    print("=== CONTENT HTML ===")
+    print(content_html[:1000])
+    print("\n=== BIBLIOGRAPHY HTML ===")
+    print(bib_html[:500])
+
+
+if __name__ == "__main__":
+    main()
