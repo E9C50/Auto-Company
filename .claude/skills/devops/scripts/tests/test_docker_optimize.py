@@ -289,3 +289,148 @@ RUN apt-get clean
 FROM node:20
 RUN apt-get update
 COPY package.json .
+RUN npm install
+"""
+        write_dockerfile(temp_dockerfile, content)
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        analyzer.load_dockerfile()
+        analyzer.analyze_combine_run()
+
+        consecutive_suggestions = [s for s in analyzer.suggestions
+                                  if 'consecutive' in s['message']]
+        assert len(consecutive_suggestions) == 0
+
+
+class TestAnalyzeWorkdir:
+    """Test WORKDIR analysis"""
+
+    def test_no_workdir(self, temp_dockerfile):
+        content = """
+FROM node:20
+COPY . /app
+CMD ["node", "/app/server.js"]
+"""
+        write_dockerfile(temp_dockerfile, content)
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        analyzer.load_dockerfile()
+        analyzer.analyze_workdir()
+
+        assert len(analyzer.suggestions) >= 1
+        assert any('WORKDIR' in s['message'] for s in analyzer.suggestions)
+
+    def test_with_workdir(self, temp_dockerfile):
+        content = """
+FROM node:20
+WORKDIR /app
+COPY . .
+CMD ["node", "server.js"]
+"""
+        write_dockerfile(temp_dockerfile, content)
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        analyzer.load_dockerfile()
+        analyzer.analyze_workdir()
+
+        workdir_suggestions = [s for s in analyzer.suggestions if 'WORKDIR' in s['message']]
+        assert len(workdir_suggestions) == 0
+
+
+class TestFullAnalyze:
+    """Test complete analysis"""
+
+    def test_analyze_poor_dockerfile(self, temp_dockerfile):
+        content = """
+FROM node:latest
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+"""
+        write_dockerfile(temp_dockerfile, content)
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        results = analyzer.analyze()
+
+        assert 'dockerfile' in results
+        assert 'total_lines' in results
+        assert 'issues' in results
+        assert 'suggestions' in results
+        assert 'summary' in results
+
+        # Should have multiple issues and suggestions
+        assert results['summary']['warnings'] > 0
+        assert results['summary']['suggestions'] > 0
+
+    def test_analyze_good_dockerfile(self, temp_dockerfile):
+        content = """
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json .
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+USER node
+EXPOSE 3000
+CMD ["node", "dist/server.js"]
+"""
+        write_dockerfile(temp_dockerfile, content)
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        results = analyzer.analyze()
+
+        # Should have minimal issues
+        assert results['summary']['errors'] == 0
+        # May have some suggestions, but fewer issues overall
+
+
+class TestPrintResults:
+    """Test results printing"""
+
+    def test_print_results(self, temp_dockerfile, capsys):
+        content = "FROM node:latest\n"
+        write_dockerfile(temp_dockerfile, content)
+
+        analyzer = DockerfileAnalyzer(temp_dockerfile)
+        results = analyzer.analyze()
+        analyzer.print_results(results)
+
+        captured = capsys.readouterr()
+        assert "Dockerfile Analysis" in captured.out
+        assert "Summary:" in captured.out
+        assert "ISSUES:" in captured.out or "SUGGESTIONS:" in captured.out
+
+
+class TestIntegration:
+    """Integration tests"""
+
+    def test_full_analysis_workflow(self, temp_dockerfile):
+        content = """
+FROM python:3.11
+COPY . /app
+RUN pip install -r /app/requirements.txt
+ENV API_KEY=secret
+CMD ["python", "/app/app.py"]
+"""
+        write_dockerfile(temp_dockerfile, content)
+
+        analyzer = DockerfileAnalyzer(temp_dockerfile, verbose=True)
+        results = analyzer.analyze()
+
+        # Verify all expected checks ran
+        assert len(analyzer.issues) > 0
+        assert len(analyzer.suggestions) > 0
+
+        # Should flag multiple categories
+        categories = {i['category'] for i in analyzer.issues}
+        assert 'security' in categories
+
+        # Verify summary calculations
+        total_findings = (results['summary']['errors'] +
+                         results['summary']['warnings'] +
+                         results['summary']['suggestions'])
+        assert total_findings > 0
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
