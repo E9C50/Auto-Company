@@ -220,3 +220,113 @@ class DockerfileAnalyzer:
         self.analyze_base_image()
         self.analyze_multi_stage()
         self.analyze_layer_caching()
+        self.analyze_security()
+        self.analyze_apt_cache()
+        self.analyze_combine_run()
+        self.analyze_workdir()
+
+        return {
+            'dockerfile': str(self.dockerfile_path),
+            'total_lines': len(self.lines),
+            'issues': self.issues,
+            'suggestions': self.suggestions,
+            'summary': {
+                'errors': len([i for i in self.issues if i.get('severity') == 'error']),
+                'warnings': len([i for i in self.issues if i.get('severity') == 'warning']),
+                'suggestions': len(self.suggestions)
+            }
+        }
+
+    def print_results(self, results: Dict) -> None:
+        """
+        Print analysis results in human-readable format.
+
+        Args:
+            results: Analysis results from analyze()
+        """
+        print(f"\nDockerfile Analysis: {results['dockerfile']}")
+        print(f"Total lines: {results['total_lines']}")
+        print(f"\nSummary:")
+        print(f"  Errors: {results['summary']['errors']}")
+        print(f"  Warnings: {results['summary']['warnings']}")
+        print(f"  Suggestions: {results['summary']['suggestions']}")
+
+        if results['issues']:
+            print(f"\n{'='*60}")
+            print("ISSUES:")
+            print('='*60)
+            for issue in results['issues']:
+                severity = issue.get('severity', 'info').upper()
+                line_info = f"Line {issue['line']}" if issue['line'] > 0 else "General"
+                print(f"\n[{severity}] {line_info} - {issue['category']}")
+                print(f"  {issue['message']}")
+                print(f"  → {issue['suggestion']}")
+
+        if results['suggestions']:
+            print(f"\n{'='*60}")
+            print("SUGGESTIONS:")
+            print('='*60)
+            for sugg in results['suggestions']:
+                line_info = f"Line {sugg['line']}" if sugg['line'] > 0 else "General"
+                print(f"\n{line_info} - {sugg['category']}")
+                print(f"  {sugg['message']}")
+                print(f"  → {sugg['suggestion']}")
+
+        print()
+
+
+def main():
+    """CLI entry point."""
+    parser = argparse.ArgumentParser(
+        description="Analyze Dockerfile for optimization opportunities",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+
+    parser.add_argument(
+        "dockerfile",
+        type=str,
+        help="Path to Dockerfile"
+    )
+
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output results as JSON"
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose output"
+    )
+
+    args = parser.parse_args()
+
+    try:
+        analyzer = DockerfileAnalyzer(
+            dockerfile_path=args.dockerfile,
+            verbose=args.verbose
+        )
+
+        results = analyzer.analyze()
+
+        if args.json:
+            print(json.dumps(results, indent=2))
+        else:
+            analyzer.print_results(results)
+
+        # Exit with error code if issues found
+        if results['summary']['errors'] > 0:
+            sys.exit(1)
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
