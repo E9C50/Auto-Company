@@ -279,3 +279,143 @@ Industry associations often publish market research:
 - Best for: Product validation
 
 **Google Surveys** ($0.10-$3.50 per response)
+
+- Quick consumer surveys
+- Best for: Basic consumer insights
+
+## Data Quality Checklist
+
+When evaluating sources:
+
+**Authority**
+
+- [ ] Who published the research?
+- [ ] What's their reputation?
+- [ ] Do they have industry expertise?
+
+**Methodology**
+
+- [ ] How was data collected?
+- [ ] What's the sample size?
+- [ ] When was research conducted?
+
+**Recency**
+
+- [ ] Is data current (< 2 years old)?
+- [ ] Has market changed significantly?
+- [ ] Are growth rates still applicable?
+
+**Consistency**
+
+- [ ] Do multiple sources agree?
+- [ ] Are definitions consistent?
+- [ ] Do numbers triangulate?
+
+**Relevance**
+
+- [ ] Does it match your market definition?
+- [ ] Is geography appropriate?
+- [ ] Are segments aligned?
+
+## Free vs. Paid Strategy
+
+**Start with free sources:**
+
+1. Government data for customer counts
+2. Public company filings for segment revenue
+3. Trade associations for industry trends
+4. Google Scholar for academic research
+
+**Upgrade to paid when:**
+
+- Raising institutional funding (investors expect premium sources)
+- Need detailed segment breakdowns
+- Market is niche or emerging
+- Free sources are outdated or insufficient
+
+**Cost-effective approach:**
+
+- Buy 1-2 key reports that cover your core market
+- Use free sources for triangulation
+- Supplement with primary research (customer interviews)
+- Cite mix of free and paid sources
+
+## Citation Best Practices
+
+Always cite sources in market sizing:
+
+**Format:**
+
+```
+Market Size: $X.XB
+Source: [Publisher], [Report Name], [Date]
+URL: [link if available]
+```
+
+**Example:**
+
+```
+Email Marketing Software TAM: $7.5B (2024)
+Source: Gartner, "Market Share: Email Marketing Software, Worldwide, 2024"
+Note: Includes all email marketing software revenue globally
+```
+
+**Include:**
+
+- Publisher and report name
+- Publication date
+- Geography and scope
+- Any adjustments made
+- Link to source (if public)
+
+## Keeping Research Current
+
+**Set Google Alerts**
+
+- Industry keywords
+- Company names
+- Market terms
+
+**Follow Research Firms**
+
+- Twitter accounts
+- LinkedIn updates
+- Free newsletter summaries
+
+**Track Public Companies**
+
+- Earnings calendars
+- Investor relations pages
+- Annual reports
+
+**Join Industry Groups**
+
+- LinkedIn groups
+- Slack communities
+- Trade associations
+
+**Review Annually**
+
+- Update market size with new data
+- Adjust growth assumptions
+- Revisit methodology if market changed
+
+## Emergency Research Guide
+
+**Need market size in < 2 hours?**
+
+1. **Check Statista** (15 min) - Quick industry overview
+2. **Find public companies** (30 min) - Get segment revenue from 10-Ks
+3. **LinkedIn search** (20 min) - Count potential B2B customers
+4. **Google Scholar** (20 min) - Find academic papers
+5. **Calculate bottom-up** (30 min) - Customers × Price
+6. **Triangulate** (15 min) - Compare sources
+
+**Document everything:**
+
+- Write down all sources
+- Note all assumptions
+- Show your methodology
+- Caveat data quality
+
+Better to have a defensible estimate with clear limitations than no data at all.
