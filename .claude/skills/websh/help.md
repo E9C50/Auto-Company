@@ -298,3 +298,153 @@ mount https://api.github.com /gh
 cd /gh/users/torvalds
 cat bio
 cd /gh/repos/torvalds/linux
+ls issues | head 10
+```
+
+### Compare page over time
+
+```
+cd https://example.com
+snapshot "before"
+# ... wait ...
+refresh
+diff --snapshot "before"
+```
+
+### Batch fetch
+
+```
+parallel cd ::: https://a.com https://b.com https://c.com
+locate "error" | head 10
+```
+
+### Search across cached pages
+
+```
+locate "authentication"
+# Searches all cached pages instantly
+
+locate -i "OAuth" --urls
+# Case-insensitive, show URLs
+```
+
+### Prefetching for instant navigation
+
+```
+cd https://news.ycombinator.com
+# Automatically prefetches visible links in background
+
+prefetch
+# Check prefetch progress
+
+follow 3
+# Instant! Already cached.
+
+prefetch off
+# Disable for slow connections
+```
+
+### Archive research
+
+```
+cd https://paper1.com &
+cd https://paper2.com &
+cd https://paper3.com &
+wait
+tar -cz research.tar.gz https://paper1.com https://paper2.com https://paper3.com
+```
+
+### Set auth headers
+
+```
+export HEADER_Authorization="Bearer mytoken"
+cd https://api.example.com/protected
+cat .
+```
+
+### Schedule monitoring
+
+```
+cron "0 * * * *" 'cd https://news.com && ls | head 5 >> hourly.txt'
+cron "0 9 * * *" 'snapshot "daily"'
+```
+
+---
+
+## How It Works
+
+When you `cd` to a URL:
+
+1. **Fetch** — Downloads the HTML
+2. **Cache** — Saves to `.websh/cache/`
+3. **Extract** — Background haiku agent parses into rich markdown
+
+Commands like `ls`, `grep`, `cat` work on cached content—instant, no refetching.
+
+Mounted APIs work similarly—API responses cached and navigable.
+
+---
+
+## Files
+
+```
+.websh/
+├── session.md      # current session
+├── cache/          # cached pages (HTML + parsed markdown)
+├── history.md      # command history
+├── bookmarks.md    # saved URLs
+├── profiles/       # auth profiles
+└── snapshots/      # saved versions
+```
+
+---
+
+## Natural Language
+
+websh understands intent, not just commands. These all work:
+
+```
+links                    → ls
+open https://example.com → cd https://example.com
+search "AI"              → grep "AI"
+what's on this page?     → ls + stat
+show me the title        → cat title
+go back                  → back
+how many links?          → wc --links
+download this            → save
+```
+
+Just say what you want. websh will figure it out.
+
+---
+
+## Tips
+
+- **Instant navigation**: Links are prefetched automatically—`follow` is usually instant
+- **Use indexes**: `ls` numbers links, `follow 3` clicks the 4th
+- **Pipe everything**: `ls | grep "foo" | head 5 | tee results.txt`
+- **Background long tasks**: `cd https://slow-site.com &`
+- **Search your cache**: `locate` searches all cached pages instantly
+- **Mount APIs**: `mount` makes REST APIs navigable like directories
+- **Compare over time**: `snapshot` + `diff --snapshot`
+- **Schedule checks**: `cron` for recurring, `at` for one-time
+- **Control prefetch**: `prefetch off` for slow connections, `prefetch` to check progress
+
+---
+
+## Limitations
+
+- **JavaScript sites**: Some content requires JS to render
+- **Authentication**: `login` is best-effort, may need manual cookies
+- **Rate limits**: Respect site limits, use `quota` to check
+- **Interaction**: `click`, `submit` limited without full browser
+
+---
+
+## Getting Help
+
+```
+help                 # this help
+help <command>       # specific command help
+man <command>        # detailed manual
+```
