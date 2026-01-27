@@ -472,3 +472,161 @@ For each factor, assess and rate 1-5:
 - 100-300ms: Slight delay noticed
 - 300ms-1s: User stays focused
 - 1-10s: Needs progress indicator
+- >10s: User multitasks, needs status
+
+---
+
+#### 5. Behavior (Actions, Reactions, Feedback)
+
+**Evaluate:**
+- Actions have clear consequences
+- Immediate feedback on interactions
+- System state always visible
+- Predictable behavior
+- Consistent interaction patterns
+- Appropriate animations/transitions
+- Error recovery built-in
+
+**Interaction Patterns:**
+- Click button → Immediate visual feedback + action
+- Submit form → Validation + confirmation
+- Delete item → Confirmation + undo option
+- Load content → Skeleton screens + progress
+
+---
+
+**Interaction Design Summary:**
+
+| Dimension | Rating | Key Issues |
+|-----------|--------|------------|
+| Words | 3/5 | Technical jargon, inconsistent terms |
+| Visual Representations | 4/5 | Minor icon clarity issues |
+| Physical Objects/Space | 2/5 | Small touch targets, poor mobile optimization |
+| Time | 3/5 | Slow loading, missing progress indicators |
+| Behavior | 3/5 | Weak feedback, inconsistent patterns |
+
+**Overall Interaction Design Score**: 15/25 (60%)
+
+---
+
+### Step 5: Apply UX Research Techniques (20 minutes)
+
+Recommend or simulate research methods:
+
+#### Expert Review (Heuristic Evaluation)
+- Apply Nielsen's 10 usability heuristics
+- Document violations and severity
+- Provide specific examples
+
+#### User Interview Questions (if conducting or recommending)
+**Discovery:**
+- "What are you trying to accomplish?"
+- "What frustrates you most about [product]?"
+- "What would you change if you could?"
+
+**Follow-up:**
+- "Can you show me how you do [task]?"
+- "What alternatives have you tried?"
+- "How does this compare to [competitor]?"
+
+#### Other Techniques to Recommend:
+- **Usability Testing**: Task-based observation (5-8 users)
+- **Card Sorting**: For information architecture (open or closed)
+- **A/B Testing**: For design alternatives
+- **Analytics Review**: Funnel analysis, heatmaps, session recordings
+- **Surveys**: Quantitative feedback (SUS, NPS, CSAT)
+- **Personas**: Refine or create based on research
+- **Journey Mapping**: Visualize end-to-end experience
+
+#### Information Visualization (Chapter 9 - IxDF)
+**For Presenting Findings:**
+- Charts: Bar charts for comparisons, line charts for trends
+- Heatmaps: Click/attention patterns
+- Flowcharts: User journeys
+- Tables: Structured data
+- Infographics: Executive summaries
+
+**Ethical Considerations:**
+- Present data honestly (no cherry-picking)
+- Disclose limitations and sample sizes
+- Avoid manipulative visualizations
+- Cite sources
+
+---
+
+### Step 6: Identify Issues and Prioritize (15 minutes)
+
+**Consolidate Findings:**
+
+Create prioritized issue list:
+
+```markdown
+## Critical Issues (Fix Immediately)
+
+### Issue 1: Poor Error Tolerance - No Undo for Deletions
+- **Frameworks Violated**: Usability (Error Tolerance 2/5), UX Factor (Usable 3/5)
+- **User Impact**: Users lose data, frustration, decreased trust
+- **Business Impact**: Support tickets, user churn
+- **Evidence**: User feedback: "Accidentally deleted project, can't recover"
+- **Severity**: Critical
+- **Effort**: Medium (2-3 days)
+- **Recommendation**: Add confirmation dialog + undo buffer (30s)
+
+### Issue 2: Information Not Findable - Hidden Search
+- **Frameworks Violated**: UX Factor (Findable 2/5), Interaction (Words/Visual)
+- **User Impact**: Can't locate content, abandons task
+- **Business Impact**: Decreased engagement, lower conversions
+- **Evidence**: Analytics show 70% exit on navigation
+- **Severity**: High
+- **Effort**: Low (1 day)
+- **Recommendation**: Add prominent search bar in header
+
+[Continue for all critical issues...]
+```
+
+**Prioritization Matrix:**
+
+| Issue | User Impact | Business Impact | Effort | Priority |
+|-------|-------------|-----------------|--------|----------|
+| No undo on delete | High | High | Medium | P0 |
+| Hidden search | High | Medium | Low | P0 |
+| Slow loading | Medium | Medium | High | P1 |
+| Poor mobile UX | High | High | High | P1 |
+
+**Priority Levels:**
+- **P0 (Critical)**: Blocks users, fix immediately
+- **P1 (High)**: Major friction, fix in current sprint
+- **P2 (Medium)**: Annoyance, fix in next release
+- **P3 (Low)**: Nice-to-have, backlog
+
+---
+
+### Step 7: Propose Rethink and Redesign (30 minutes)
+
+**Use Design Thinking Process:**
+
+#### Phase 1: Empathize (Already done via audit)
+- Synthesize user pain points
+- Reference personas
+- Map emotional journey
+
+#### Phase 2: Define Problem Statements
+**Template**: [Persona] needs [need] because [insight]
+
+**Examples:**
+- "Sarah needs faster task completion because she's always on-the-go and time-constrained"
+- "New users need clearer onboarding because they abandon within 2 minutes without understanding value"
+
+#### Phase 3: Ideate Solutions
+
+**Brainstorm Approaches:**
+
+**For Findability Issues:**
+1. Add global search with auto-complete
+2. Redesign navigation to 3-tier hierarchy
+3. Implement breadcrumbs
+4. Add "Recently Viewed" section
+5. Create dynamic filters
+
+**Selection Criteria:**
+- Impact (high/medium/low)
