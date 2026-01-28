@@ -417,3 +417,142 @@ How's [specific day/time]?
 
 **Option 1: The Specific Time**
 ```
+Are you free Tuesday at 2 PM or Wednesday at 10 AM for 15 minutes? I'll send a calendar invite.
+```
+
+**Option 2: The Open-Ended**
+```
+What does your calendar look like next week? Happy to work around your schedule.
+```
+
+**Option 3: The Low-Commitment**
+```
+Want to start with a 10-minute screen share? I can show you [specific thing] and you can decide if it's worth exploring more.
+```
+
+---
+
+## 📨 Email #7: The Breakup
+
+**Send**: Day 14 at 4:00 PM
+**Goal**: Final attempt with FOMO and respect
+**Subject**: "Should I close your file?"
+
+### Email Body
+
+```
+[First Name],
+
+I'm going to assume [topic] isn't a priority right now, and that's totally fine.
+
+I'll close your file on my end unless I hear otherwise.
+
+For what it's worth, we typically see the best results when [time-sensitive reason], so if you do want to revisit this in the future, might be worth a quick conversation now.
+
+But no worries either way—appreciate your time.
+
+[Your Name]
+
+P.S. - If there's someone else at [their company] I should be talking to about this instead, happy to redirect.
+```
+
+---
+
+### Breakup Email Variations
+
+**Option 1: The FOMO**
+```
+Subject: "Taking you off the list"
+
+[Name], I'll take you off my follow-up list since I haven't heard back.
+
+Just FYI—[competitor or similar company] just started implementation this week and they're seeing [early result] already.
+
+If you change your mind in the next quarter, let me know. Otherwise, all the best!
+```
+
+**Option 2: The Permission**
+```
+Subject: "Is this a bad time?"
+
+[Name], haven't heard back so I'm assuming this either:
+1. Isn't relevant
+2. Isn't a priority
+3. Bad timing
+
+Which is it? If it's #3, when should I check back in?
+```
+
+**Option 3: The Referral Ask**
+```
+Subject: "Wrong person?"
+
+[Name], clearly I'm not reaching the right person at [Company].
+
+Should I be talking to someone else about [topic]? Happy to redirect.
+```
+
+---
+
+## 🧪 A/B Testing Strategy
+
+### Test Variables
+
+**Subject Lines** (Test These First):
+- Question vs. Statement
+- Generic vs. Personalized
+- Short (3-5 words) vs. Long (8-12 words)
+- Curiosity vs. Value prop
+- With emoji vs. without
+
+**Email Body**:
+- Length: Short (50 words) vs. Medium (100 words)
+- CTA: Link vs. Question vs. Time slot
+- Bullets vs. Paragraph format
+- Social proof: Stats vs. Names vs. Quotes
+
+**Sending Time**:
+- Morning (9-11 AM) vs. Afternoon (2-4 PM)
+- Tuesday vs. Wednesday vs. Thursday
+- Recipient's timezone (test if worth the complexity)
+
+### Sample A/B Test
+
+**Email 1 Test**:
+- **Version A**: Curiosity subject + short email (50 words) + question CTA
+- **Version B**: Value subject + medium email (100 words) + meeting time CTA
+
+Send to 100 prospects: 50 get A, 50 get B
+Wait 48 hours, measure open and reply rates
+Winner goes to remaining list
+
+---
+
+## 📊 Sequence Performance Metrics
+
+### Benchmarks to Track
+
+| Metric | Good | Great | Exceptional |
+|--------|------|-------|-------------|
+| Email 1 Open Rate | 35-45% | 45-55% | 55%+ |
+| Email 1 Reply Rate | 3-8% | 8-15% | 15%+ |
+| Sequence Reply Rate | 8-15% | 15-25% | 25%+ |
+| Positive Reply % | 40-50% | 50-70% | 70%+ |
+| Meeting Booked % | 1-3% | 3-6% | 6%+ |
+
+### Success Factors
+
+**High Reply Rates**:
+- ✅ Highly personalized opening line
+- ✅ Clear value prop in first 2 sentences
+- ✅ Social proof from similar companies
+- ✅ Low-friction CTA
+- ✅ Sent at optimal time
+- ✅ Clean email formatting (no images, minimal links)
+
+**Low Reply Rates**:
+- ❌ Generic template language
+- ❌ Too salesy in tone
+- ❌ No personalization
+- ❌ Vague value prop
+- ❌ Lengthy paragraphs
