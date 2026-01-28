@@ -377,3 +377,129 @@ Setting up community infrastructure
     - Moderation scale
     - Budget constraints
     
+    ### 3. Common Architectures
+    
+    **Developer Community**
+    ```
+    Discord (real-time chat)
+    + GitHub Discussions (code-related)
+    + Discourse (long-form)
+    ```
+    
+    **SaaS Community**
+    ```
+    Circle or Bettermode (primary)
+    + Slack connect (customers)
+    + Events platform
+    ```
+    
+    **Enterprise Community**
+    ```
+    Custom or Khoros (branded)
+    + SSO integration
+    + CRM connection
+    ```
+    
+    ### 4. Integration Architecture
+    
+    ```
+    Community Platform
+    ├── SSO (product login)
+    ├── CRM (member data)
+    ├── Product (usage data)
+    ├── Analytics (engagement tracking)
+    ├── Support (ticket deflection)
+    └── Events (registration)
+    ```
+    
+    ### 5. Migration Considerations
+    
+    | From | To | Considerations |
+    |------|----|----------------|
+    | Free Slack | Paid platform | Content export, member migration |
+    | Facebook | Owned platform | Reduced reach, better data |
+    | Forum | Chat | Different engagement patterns |
+    
+
+## Anti-Patterns
+
+
+---
+  #### **Name**
+Community Theater
+  #### **Description**
+Launching community without strategy
+  #### **Why Bad**
+    Empty community is worse than none.
+    Signals neglect to users.
+    Costs resources without return.
+    
+  #### **What To Do Instead**
+    Start with 50-100 engaged users.
+    Validate community need first.
+    Seed with content and activity.
+    
+
+---
+  #### **Name**
+Corporate Capture
+  #### **Description**
+Making community feel like marketing channel
+  #### **Why Bad**
+    Users detect inauthenticity.
+    Kills organic engagement.
+    Drives away best advocates.
+    
+  #### **What To Do Instead**
+    Community-first, company-second.
+    Let users lead discussions.
+    Promotional content < 10%.
+    
+
+---
+  #### **Name**
+Vanity Metrics Focus
+  #### **Description**
+Optimizing member count over engagement
+  #### **Why Bad**
+    Large inactive communities look bad.
+    Engagement rate crashes.
+    No business impact.
+    
+  #### **What To Do Instead**
+    Focus on engagement rate.
+    Quality > quantity.
+    Measure business outcomes.
+    
+
+---
+  #### **Name**
+Platform Hopping
+  #### **Description**
+Constantly changing community platforms
+  #### **Why Bad**
+    Loses community history.
+    Frustrates members.
+    Resets growth.
+    
+  #### **What To Do Instead**
+    Choose platform for 3+ years.
+    Migrate only with clear ROI.
+    Preserve content when moving.
+    
+
+---
+  #### **Name**
+Ignoring Power Users
+  #### **Description**
+No special treatment for top contributors
+  #### **Why Bad**
+    Power users drive majority of value.
+    They leave without recognition.
+    Community becomes generic.
+    
+  #### **What To Do Instead**
+    Identify and nurture top 10%.
+    Create tiered recognition.
+    Give exclusive access and benefits.
+    
