@@ -370,3 +370,127 @@
 ### External Validity (Generalizability)
 - [ ] Sample representative of population
 - [ ] Setting realistic/natural
+- [ ] Treatment typical of real-world implementation
+- [ ] Outcome measures ecologically valid
+- [ ] Time frame appropriate
+
+### Construct Validity (Measurement)
+- [ ] Measures actually tap intended constructs
+- [ ] Operations match theoretical definitions
+- [ ] No confounding of constructs
+- [ ] Adequate coverage of construct
+
+### Statistical Conclusion Validity
+- [ ] Adequate statistical power
+- [ ] Assumptions met
+- [ ] Appropriate tests used
+- [ ] Alpha level appropriate
+- [ ] Multiple comparisons addressed
+
+## Reporting and Transparency
+
+### Preregistration
+- [ ] Study preregistered (OSF, ClinicalTrials.gov, AsPredicted)
+- [ ] Hypotheses stated a priori
+- [ ] Analysis plan documented
+- [ ] Distinguishes confirmatory from exploratory
+
+### Reporting Guidelines
+- [ ] **RCTs:** CONSORT checklist
+- [ ] **Observational studies:** STROBE checklist
+- [ ] **Systematic reviews:** PRISMA checklist
+- [ ] **Diagnostic studies:** STARD checklist
+- [ ] **Qualitative research:** COREQ checklist
+- [ ] **Case reports:** CARE guidelines
+
+### Transparency
+- [ ] All measures reported
+- [ ] All manipulations disclosed
+- [ ] Sample size determination explained
+- [ ] Exclusion criteria and numbers reported
+- [ ] Attrition documented
+- [ ] Deviations from protocol noted
+- [ ] Conflicts of interest disclosed
+
+### Open Science
+- [ ] Data sharing planned (when ethical)
+- [ ] Analysis code shared
+- [ ] Materials available
+- [ ] Preprint posted
+- [ ] Open access publication when possible
+
+## Post-Study Considerations
+
+### Data Analysis
+- [ ] Follow preregistered plan
+- [ ] Clearly label deviations and exploratory analyses
+- [ ] Check assumptions
+- [ ] Report all outcomes
+- [ ] Report effect sizes and CIs, not just p-values
+
+### Interpretation
+- [ ] Conclusions supported by data
+- [ ] Limitations acknowledged
+- [ ] Alternative explanations considered
+- [ ] Generalizability discussed
+- [ ] Clinical/practical significance addressed
+
+### Dissemination
+- [ ] Publish regardless of results (reduce publication bias)
+- [ ] Present at conferences
+- [ ] Share findings with participants (when appropriate)
+- [ ] Communicate to relevant stakeholders
+- [ ] Plain language summaries
+
+### Next Steps
+- [ ] Replication needed?
+- [ ] Follow-up studies identified
+- [ ] Mechanism studies planned
+- [ ] Clinical applications considered
+
+## Common Pitfalls to Avoid
+
+- [ ] No power analysis → underpowered study
+- [ ] Hypothesis formed after seeing data (HARKing)
+- [ ] No blinding when feasible → bias
+- [ ] P-hacking (data fishing, optional stopping)
+- [ ] Multiple testing without correction → false positives
+- [ ] Inadequate control group
+- [ ] Confounding not addressed
+- [ ] Instruments not validated
+- [ ] High attrition not addressed
+- [ ] Cherry-picking results to report
+- [ ] Causal language from correlational data
+- [ ] Ignoring assumptions of statistical tests
+- [ ] Not preregistering changes literature bias
+- [ ] Conflicts of interest not disclosed
+
+## Final Checklist Before Starting
+
+- [ ] Research question is clear and important
+- [ ] Hypothesis is testable and specific
+- [ ] Study design is appropriate
+- [ ] Sample size is adequate (power analysis)
+- [ ] Measures are valid and reliable
+- [ ] Confounds are controlled
+- [ ] Randomization and blinding implemented
+- [ ] Data collection is standardized
+- [ ] Analysis plan is prespecified
+- [ ] Ethical approval obtained
+- [ ] Study is preregistered
+- [ ] Resources are sufficient
+- [ ] Team is trained
+- [ ] Protocol is documented
+- [ ] Backup plans exist for problems
+
+## Remember
+
+**Good experimental design is about:**
+- Asking clear questions
+- Minimizing bias
+- Maximizing validity
+- Appropriate inference
+- Transparency
+- Reproducibility
+
+**The best time to think about these issues is before collecting data, not after.**
