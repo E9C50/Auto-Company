@@ -630,3 +630,161 @@ diff -t <duration>           # compare to cached version from <duration> ago
 diff --wayback <date>        # compare to Wayback Machine snapshot
 ```
 
+**Examples:**
+```
+diff https://a.com https://b.com
+diff -t 1h                   # compare to 1 hour ago
+diff --wayback 2024-01-01    # compare to Wayback snapshot
+```
+
+---
+
+### `patch`
+
+Apply changes (for APIs with write access).
+
+**Syntax:**
+```
+patch <file>         # apply diff file
+```
+
+*Note: Requires mounted API with write permissions.*
+
+---
+
+## Monitoring
+
+### `watch`
+
+Monitor URL for changes.
+
+**Syntax:**
+```
+watch <url>                  # poll every 60s
+watch -n <seconds>           # custom interval
+watch -d                     # highlight differences
+watch --notify               # system notification on change
+watch --exec <cmd>           # run command on change
+watch --selector <css>       # only watch specific element
+```
+
+**Examples:**
+```
+watch https://status.example.com -n 30
+watch -d --selector ".price"
+watch --notify --exec "echo 'Changed!'"
+```
+
+**Output:** Shows content, updates in place, highlights changes
+
+---
+
+### `tail -f <url>`
+
+Stream live content (for SSE, websocket, or polling).
+
+**Syntax:**
+```
+tail -f <url>                # stream updates
+tail -f --sse                # Server-Sent Events
+tail -f --ws                 # WebSocket
+tail -f --poll <n>           # poll every n seconds
+```
+
+---
+
+### `ping`
+
+Check if site is up.
+
+**Syntax:**
+```
+ping <url>
+ping -c <n>          # count of pings
+ping -i <seconds>    # interval
+```
+
+**Output:**
+```
+PING https://example.com
+200 OK - 145ms
+200 OK - 132ms
+200 OK - 156ms
+--- 3 requests, avg 144ms ---
+```
+
+---
+
+### `traceroute`
+
+Show redirect chain.
+
+**Syntax:**
+```
+traceroute <url>
+```
+
+**Output:**
+```
+1. https://short.link/abc (301)
+2. https://example.com/redirect (302)
+3. https://example.com/final (200)
+```
+
+---
+
+### `time`
+
+Measure command execution time.
+
+**Syntax:**
+```
+time <command>
+```
+
+**Output:**
+```
+[command output]
+
+real    0.45s
+fetch   0.32s
+extract 0.13s
+```
+
+---
+
+## Process & Job Management
+
+### `ps`
+
+Show running background tasks.
+
+**Syntax:**
+```
+ps                   # list all tasks
+ps -l                # long format
+ps -a                # all (including completed)
+```
+
+**Output:**
+```
+PID   STATUS      URL/TASK
+1     extracting  news-ycombinator-com
+2     fetching    x-com-deepfates
+3     watching    status.example.com
+```
+
+---
+
+### `jobs`
+
+List background jobs.
+
+**Syntax:**
+```
+jobs
+jobs -l              # with PIDs
+jobs -r              # running only
+jobs -s              # stopped only
+```
+
