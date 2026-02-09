@@ -558,3 +558,142 @@ websh can mount APIs as virtual filesystems.
 mount https://api.github.com /gh
 mount -t github octocat/Hello-World /repo
 mount -t rss https://blog.com/feed.xml /feed
+```
+
+### Navigate mounted paths
+
+```
+cd /gh/users/octocat
+ls
+# avatar_url
+# bio
+# blog
+# ...
+
+cat bio
+# "A developer who loves open source"
+
+cd /gh/repos/octocat/Hello-World
+ls issues
+cat issues/1
+```
+
+### Mount types
+
+| Type | Behavior |
+|------|----------|
+| `rest` | Generic REST API (default) |
+| `github` | GitHub API with auth, pagination |
+| `rss` | RSS/Atom feed as directory of items |
+| `json` | JSON endpoint, navigate keys |
+
+### Unmount
+
+```
+umount /gh
+umount -a    # unmount all
+```
+
+---
+
+## Caching
+
+Most commands read from cache, not network.
+
+### Cache lookup order
+
+1. **Check for `.parsed.md`** — Use rich extracted content if available
+2. **Fall back to `.html`** — Parse on-demand if extraction incomplete
+
+### Cache status
+
+```
+stat
+URL:       https://news.ycombinator.com
+Cached:    yes
+Extracted: 3 passes, complete
+Age:       5 minutes
+```
+
+### Graceful degradation
+
+If extraction is still running:
+- `ls` shows basic links from raw HTML
+- `grep` searches raw text
+- `cat` does simple extraction
+
+Commands improve as extraction completes.
+
+### Forcing refresh
+
+```
+cd https://example.com      # use cache if available
+refresh                     # re-fetch current page
+cd -f https://example.com   # force fetch (ignore cache)
+```
+
+---
+
+## Pipes and Redirection
+
+### Pipes
+
+Commands chain with `|`:
+```
+ls | grep "AI" | head 5 | sort
+```
+
+Each command receives previous output as stdin.
+
+### Redirection
+
+```
+ls > links.txt           # write to file
+ls >> links.txt          # append to file
+cat < urls.txt           # read from file (for commands that support it)
+```
+
+### tee
+
+Save and display:
+```
+ls | grep "AI" | tee ai-links.txt
+```
+
+---
+
+## Command Substitution
+
+Use `$()` to substitute command output:
+```
+cd $(wayback https://example.com 2020-01-01)
+diff $(locate "config" | head 1) $(locate "config" | tail 1)
+```
+
+---
+
+## History
+
+### Access history
+
+```
+history           # show all
+history 10        # last 10
+history | grep cd # filter
+```
+
+### History expansion
+
+```
+!!                # repeat last command
+!5                # repeat command 5
+!cd               # repeat last command starting with "cd"
+!?grep            # repeat last command containing "grep"
+```
+
+---
+
+## Chroot
+
+Restrict navigation to a boundary:
+
