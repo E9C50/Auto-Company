@@ -570,3 +570,145 @@ When continuation agent starts:
 1. Read continuation_state.json → Load ALL context
 2. Read existing report file → Review last 3 sections
 3. Extract patterns:
+   - Sentence structure complexity
+   - Technical terminology used
+   - Citation placement patterns
+   - Paragraph transition style
+
+**Pre-Generation Checklist:**
+- [ ] Loaded research context (themes, question, narrative arc)
+- [ ] Reviewed previous sections for flow
+- [ ] Loaded citation numbering (start from N+1)
+- [ ] Loaded quality targets (words, density, style)
+- [ ] Understand where in narrative arc (beginning/middle/end)
+
+**Per-Section Generation:**
+1. Generate section content
+2. Quality checks:
+   - Word count: Within target ±20%
+   - Citation density: Matches established rate
+   - Prose ratio: ≥80% prose
+   - Theme connection: Ties to key_themes
+   - Style match: Consistent with quality_metrics.writing_style
+3. If ANY check fails: Regenerate section
+4. If passes: Write to file, update state
+
+**Handoff Decision:**
+- Calculate: Current word count + remaining sections × avg_words_per_section
+- If total < 18K: Generate all remaining sections + finish
+- If total > 18K: Generate partial batch, update state, spawn next agent
+
+**Final Agent Responsibilities:**
+- Generate final content sections
+- Generate COMPLETE bibliography using ALL citations from state.citations.bibliography_entries
+- Read entire assembled report
+- Run validation: python scripts/validate_report.py --report [path]
+- Delete continuation_state.json (cleanup)
+- Report complete to user with metrics
+
+**Anti-Fatigue Built-In:**
+Each agent generates manageable chunks (≤18K words), maintaining quality.
+Context preservation ensures coherence across continuation boundaries.
+
+**Generate HTML (McKinsey Style)**
+1. Read McKinsey template from `./templates/mckinsey_report_template.html`
+2. Extract 3-4 key quantitative metrics from findings for dashboard
+3. **Use Python script for MD to HTML conversion:**
+
+   ```bash
+   cd ~/.claude/skills/deep-research
+   python scripts/md_to_html.py [markdown_report_path]
+   ```
+
+   The script returns two parts:
+   - **Part A ({{CONTENT}}):** All sections except Bibliography, properly converted to HTML
+   - **Part B ({{BIBLIOGRAPHY}}):** Bibliography section only, formatted as HTML
+
+   **CRITICAL:** The script handles ALL conversion automatically:
+   - Headers: ## → `<div class="section"><h2 class="section-title">`, ### → `<h3 class="subsection-title">`
+   - Lists: Markdown bullets → `<ul><li>` with proper nesting
+   - Tables: Markdown tables → `<table>` with thead/tbody
+   - Paragraphs: Text wrapped in `<p>` tags
+   - Bold/italic: **text** → `<strong>`, *text* → `<em>`
+   - Citations: [N] preserved for tooltip conversion in step 4
+
+4. **Add Citation Tooltips (Attribution Gradients):**
+   For each [N] citation in {{CONTENT}} (not bibliography), optionally add interactive tooltips:
+   ```html
+   <span class="citation">[N]
+     <span class="citation-tooltip">
+       <div class="tooltip-title">[Source Title]</div>
+       <div class="tooltip-source">[Author/Publisher]</div>
+       <div class="tooltip-claim">
+         <div class="tooltip-claim-label">Supports Claim:</div>
+         [Extract sentence with this citation]
+       </div>
+     </span>
+   </span>
+   ```
+   NOTE: This step is optional for speed. Basic [N] citations are sufficient.
+
+5. Replace placeholders in template:
+   - {{TITLE}} - Report title (extract from first ## heading in MD)
+   - {{DATE}} - Generation date (YYYY-MM-DD format)
+   - {{SOURCE_COUNT}} - Number of unique sources
+   - {{METRICS_DASHBOARD}} - Metrics HTML from step 2
+   - {{CONTENT}} - HTML from Part A (script output)
+   - {{BIBLIOGRAPHY}} - HTML from Part B (script output)
+
+6. **CRITICAL: NO EMOJIS** - Remove any emoji characters from final HTML
+
+7. Save to: `[folder]/research_report_[YYYYMMDD]_[slug].html`
+
+8. **Verify HTML (MANDATORY):**
+   ```bash
+   python scripts/verify_html.py --html [html_path] --md [md_path]
+   ```
+   - Check passes: Proceed to step 9
+   - Check fails: Fix errors and re-run verification
+
+9. Open in browser: `open [html_path]`
+
+**Generate PDF**
+1. Use Task tool with general-purpose agent
+2. Invoke generating-pdf skill with markdown as input
+3. Save to: `[folder]/research_report_[YYYYMMDD]_[slug].pdf`
+4. PDF will auto-open when complete
+
+---
+
+## Output Contract
+
+**Format:** Comprehensive markdown report following [template](./templates/report_template.md) EXACTLY
+
+**Required sections (all must be detailed):**
+- Executive Summary (2-3 concise paragraphs, 50-250 words)
+- Introduction (2-3 paragraphs: question, scope, methodology, assumptions)
+- Main Analysis (4-8 findings, each 300-500 words with citations [1], [2], [3])
+- Synthesis & Insights (500-1000 words: patterns, novel insights, implications)
+- Limitations & Caveats (2-3 paragraphs: gaps, assumptions, uncertainties)
+- Recommendations (3-5 immediate actions, 3-5 next steps, 3-5 further research)
+- **Bibliography (CRITICAL - see rules below)**
+- Methodology Appendix (2-3 paragraphs: process, sources, verification)
+
+**Bibliography Requirements (ZERO TOLERANCE - Report is UNUSABLE without complete bibliography):**
+- ✅ MUST include EVERY citation [N] used in report body (if report has [1]-[50], write all 50 entries)
+- ✅ Format: [N] Author/Org (Year). "Title". Publication. URL (Retrieved: Date)
+- ✅ Each entry on its own line, complete with all metadata
+- ❌ NO placeholders: NEVER use "[8-75] Additional citations", "...continue...", "etc.", "[Continue with sources...]"
+- ❌ NO ranges: Write [3], [4], [5]... individually, NOT "[3-50]"
+- ❌ NO truncation: If 30 sources cited, write all 30 entries in full
+- ⚠️ Validation WILL FAIL if bibliography contains placeholders or missing citations
+- ⚠️ Report is GARBAGE without complete bibliography - no way to verify claims
+
+**Strictly Prohibited:**
+- Placeholder text (TBD, TODO, [citation needed])
+- Uncited major claims
+- Broken links
+- Missing required sections
+- **Short summaries instead of detailed analysis**
+- **Vague statements without specific evidence**
+
+**Writing Standards (Critical):**
+- **Narrative-driven**: Write in flowing prose with complete sentences that build understanding progressively
+- **Precision**: Choose each word deliberately - every word must carry intention
