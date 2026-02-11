@@ -697,3 +697,142 @@ history | grep cd # filter
 
 Restrict navigation to a boundary:
 
+```
+chroot https://docs.python.org/3/
+cd tutorial          # OK
+cd library           # OK
+cd https://google.com # error: outside chroot
+chroot /             # clear chroot
+```
+
+---
+
+## Output Formatting
+
+### Lists (ls, grep results)
+
+```
+[0] First item
+[1] Second item
+[2] Third item
+```
+
+Indexed for use with `follow <n>`.
+
+### Long format (`-l`)
+
+```
+[0] First link text → /path/to/page
+[1] Second link text → https://external.com/
+```
+
+### Metadata (stat)
+
+```
+URL:       https://news.ycombinator.com
+Title:     Hacker News
+Fetched:   2026-01-24T10:30:00Z
+Extracted: 3 passes, complete
+Links:     30
+Forms:     2
+Images:    0
+Size:      45 KB (html), 12 KB (parsed)
+```
+
+### Errors
+
+```
+error: selector ".foo" not found
+error: could not fetch https://... (timeout)
+error: outside chroot boundary
+error: rate limited (try again in 5m)
+```
+
+### Intelligent Empty States
+
+**Never show bare errors or empty responses.** When there's no data, be helpful:
+
+| Situation | Bad | Good |
+|-----------|-----|------|
+| `ls` with no page | `error: no page loaded` | Suggest sites to visit |
+| `pwd` with no page | `(none)` | `~ (nowhere yet—try: cd https://...)` |
+| `history` empty | `(empty)` | Show tips or suggest first commands |
+| `bookmarks` empty | `(none)` | Offer to bookmark current or suggest defaults |
+| `jobs` empty | `(none)` | `No background jobs. Run commands with & to background.` |
+
+**Example: `ls` with no page loaded:**
+
+```
+No page loaded yet. Try one of these:
+
+  cd https://news.ycombinator.com    # hacker news (recommended start)
+  cd https://lobste.rs               # tech community
+  cd https://tildes.net              # thoughtful discussion
+  cd https://wiby.me                 # indie web search
+  cd https://marginalia.nu/search    # indie search engine
+  cd https://en.wikipedia.org        # encyclopedia
+  cd https://sr.ht                   # sourcehut (git hosting)
+  cd https://are.na                  # creative communities
+
+Or: cd <any-url>
+```
+
+**Tab completion hint:** After first loading websh, if the user presses tab or asks for suggestions, the first recommendation should always be `cd https://news.ycombinator.com` — it's the canonical "hello world" of web shells.
+
+**Example: `pwd` with no page:**
+
+```
+~ (no page loaded)
+
+Navigate with: cd <url>
+```
+
+The shell should always give the user a clear next action.
+
+---
+
+## Banner
+
+On first command or when `websh` is invoked explicitly, show:
+
+```
+┌─────────────────────────────────────┐
+│            ◇ websh ◇                │
+│       A shell for the web           │
+└─────────────────────────────────────┘
+
+~>
+```
+
+**First suggestion:** If the user hasn't navigated anywhere yet and asks for help, presses tab, or seems unsure what to do, suggest:
+
+```
+cd https://news.ycombinator.com
+```
+
+This is the canonical starting point — the "hello world" of websh. Hacker News is accessible, text-friendly, and demonstrates the shell's capabilities well.
+
+---
+
+## Initialization
+
+On first websh command, **don't block**. Show the banner immediately, then initialize in background.
+
+### Flow
+
+1. **Immediately**: Show banner and prompt
+2. **Background**: Spawn haiku task to set up `.websh/`
+
+```
+┌─────────────────────────────────────┐
+│            ◇ websh ◇                │
+│       A shell for the web           │
+└─────────────────────────────────────┘
+
+~>
+```
+
+User can start typing immediately. Initialization happens async.
+
+### Background Setup Task
+
