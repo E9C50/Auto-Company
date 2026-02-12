@@ -1261,3 +1261,160 @@ type --clear <selector>      # clear first
 
 ---
 
+### `scroll`
+
+Trigger scroll/pagination.
+
+**Syntax:**
+```
+scroll               # scroll down (trigger infinite scroll)
+scroll --bottom      # scroll to bottom
+scroll --page <n>    # go to page n
+scroll --next        # next page
+```
+
+*Note: Limited without full browser.*
+
+---
+
+### `screenshot`
+
+Capture visual snapshot (requires browser tools).
+
+**Syntax:**
+```
+screenshot <file>
+screenshot --full    # full page
+screenshot --selector <css>  # specific element
+```
+
+---
+
+## Scheduling
+
+### `cron`
+
+Schedule recurring commands.
+
+**Syntax:**
+```
+cron "<schedule>" <command>
+cron -l              # list scheduled jobs
+cron -r <id>         # remove job
+```
+
+**Examples:**
+```
+cron "0 * * * *" 'watch https://status.com --notify'
+cron "0 9 * * *" 'cd https://news.com && ls | head 5 > daily.txt'
+```
+
+---
+
+### `at`
+
+Schedule one-time command.
+
+**Syntax:**
+```
+at <time> <command>
+at -l                # list pending
+at -r <id>           # remove
+```
+
+**Examples:**
+```
+at "10:00" 'refresh'
+at "+1h" 'snapshot "hourly"'
+at "2024-12-25 00:00" 'cd https://xmas.com'
+```
+
+---
+
+## Aliases & Scripts
+
+### `alias`
+
+Create command shortcut.
+
+**Syntax:**
+```
+alias <name>='<command>'
+alias                # list all
+alias <name>         # show specific
+unalias <name>       # remove
+```
+
+**Examples:**
+```
+alias hn='cd https://news.ycombinator.com'
+alias top5='ls | head 5'
+alias search='grep -i'
+```
+
+---
+
+### `ln -s`
+
+Create URL alias/symlink.
+
+**Syntax:**
+```
+ln -s <url> <name>
+```
+
+**Example:**
+```
+ln -s https://news.ycombinator.com hn
+cd hn                # works like cd https://news.ycombinator.com
+```
+
+---
+
+## State Commands
+
+### `history`
+
+Show command history.
+
+**Syntax:**
+```
+history
+history <n>          # last n commands
+history -c           # clear history
+history | grep <pattern>
+!<n>                 # execute command n from history
+!!                   # repeat last command
+```
+
+---
+
+### `bookmark [name]`
+
+Save URL as bookmark.
+
+**Syntax:**
+```
+bookmark              # auto-name from domain
+bookmark <name>
+bookmark -d <name>    # delete
+bookmark -l           # list (same as bookmarks)
+```
+
+---
+
+### `bookmarks`
+
+List all bookmarks.
+
+**Syntax:**
+```
+bookmarks
+bookmarks | grep <pattern>
+```
+
+---
+
+### `go <bookmark>`
+
+Navigate to bookmark.
