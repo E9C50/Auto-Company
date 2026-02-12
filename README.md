@@ -7,12 +7,13 @@
 14 AI agents, each modeled after world-class experts in their domain.
 They ideate products, make decisions, write code, deploy, and market - without human intervention.
 
-Powered by [Codex CLI](https://www.npmjs.com/package/@openai/codex) (default) and Claude Code (optional) on macOS + Windows/WSL.
+Powered by [Codex CLI](https://www.npmjs.com/package/@openai/codex) and Claude Code on macOS + Windows/WSL.
 
 [![macOS](https://img.shields.io/badge/Platform-macOS-blue)](#dependencies)
 [![Windows WSL](https://img.shields.io/badge/Platform-Windows%20WSL-blue)](#windows-wsl-quick-start)
 [![Codex CLI](https://img.shields.io/badge/Engine-Codex%20CLI-orange)](https://www.npmjs.com/package/@openai/codex)
 [![Claude Code](https://img.shields.io/badge/Engine-Claude%20Code-purple)](#dependencies)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Experimental-red)](#disclaimer)
 
 > **Experimental project** - still under active testing. It runs, but stability is not guaranteed.  
@@ -36,7 +37,7 @@ You start a loop. The AI team wakes up, reads shared consensus memory, decides w
 daemon (launchd / systemd --user, auto-restart on crash)
   └── scripts/core/auto-loop.sh (continuous loop)
         ├── reads PROMPT.md + consensus.md
-        ├── LLM CLI call (default: codex exec; optional: Claude Code)
+        ├── LLM CLI call (Codex CLI / Claude Code)
         │   ├── reads CLAUDE.md (charter + guardrails)
         │   ├── reads .claude/skills/team/SKILL.md (teaming method)
         │   ├── forms an Agent Team (3-5 agents)
@@ -46,7 +47,7 @@ daemon (launchd / systemd --user, auto-restart on crash)
         └── sleep -> next cycle
 ```
 
-Each cycle is an independent CLI call (default: `codex exec`). `memories/consensus.md` is the only cross-cycle state.
+Each cycle is an independent CLI call. `memories/consensus.md` is the only cross-cycle state.
 
 ## Where To Start (By Platform)
 
@@ -81,7 +82,7 @@ Plus 30+ reusable skills (deep research, scraping, financial modeling, SEO, secu
 ```bash
 # Prerequisites:
 # - macOS
-# - Codex CLI (default) or Claude Code installed and authenticated
+# - Codex CLI or Claude Code installed and authenticated
 # - Available model quota
 
 # Clone
@@ -105,62 +106,15 @@ Recommended architecture on Windows: PowerShell command entry + WSL execution co
 
 Detailed guide: [`docs/windows-setup.md`](docs/windows-setup.md)
 
-Common Windows commands (run in the repository root):
+Minimal run (from repository root):
 
 ```powershell
 .\scripts\windows\start-win.ps1              # Start WSL daemon + awake guardian + WSL keepalive
 .\scripts\windows\status-win.ps1             # Guardian + keepalive + daemon + loop status
-.\scripts\windows\monitor-win.ps1            # Live logs
-.\scripts\windows\last-win.ps1               # Last full cycle output
-.\scripts\windows\cycles-win.ps1             # Cycle summary
 .\scripts\windows\stop-win.ps1               # Stop loop
-.\scripts\windows\dashboard-win.ps1          # Local web dashboard
-.\scripts\windows\enable-autostart-win.ps1  # Optional: enable start-on-login
-.\scripts\windows\disable-autostart-win.ps1 # Disable start-on-login
-.\scripts\windows\autostart-status-win.ps1  # Check autostart status
 ```
 
-### Windows Preconditions (Before Each Run)
-
-1. Ensure `make`, selected CLI (`codex` or `claude`), and `jq` are available inside WSL.
-2. Ensure selected CLI is authenticated and runnable inside WSL.
-3. Prefer WSL-local CLI path (`/home/...`) from `command -v codex` or `command -v claude`.
-
-### Windows Recommended Flow
-
-```powershell
-.\scripts\windows\start-win.ps1 -CycleTimeoutSeconds 1800 -LoopInterval 30
-.\scripts\windows\status-win.ps1
-.\scripts\windows\monitor-win.ps1
-.\scripts\windows\last-win.ps1
-.\scripts\windows\cycles-win.ps1
-.\scripts\windows\stop-win.ps1
-.\scripts\windows\dashboard-win.ps1
-```
-
-Suggested parameters:
-- `CycleTimeoutSeconds`: `900-1800`
-- `LoopInterval`: `30-60`
-
-Optional autostart:
-- Disabled by default
-- Enable with `.\scripts\windows\enable-autostart-win.ps1`
-- If you see `Access is denied`, retry in an elevated (Administrator) PowerShell
-
-### Windows + WSL Index
-
-For full file index and script responsibility matrix, see [`INDEX.md`](INDEX.md).
-
-### Chat-First Operation (Recommended)
-
-If you do not want to run commands manually, you can operate through Codex/Claude chat on Windows.
-
-Feasibility:
-- Yes, this works.
-- Core chain remains the same: `scripts/windows/start-win.ps1` -> WSL `systemd --user` -> `scripts/core/auto-loop.sh`.
-- Windows entry also starts `wsl-anchor-win.ps1` to reduce idle WSL session teardown.
-- Current scripts are wired to Codex by default. To run Claude Code, adapt the engine command in `scripts/core/auto-loop.sh`.
-- Core behavior is identical to manual operation; only the control interface changes.
+For monitoring, dashboard, and autostart commands, use [`docs/windows-setup.md`](docs/windows-setup.md).
 
 ## Command Quick Reference (By Platform)
 
@@ -278,8 +232,7 @@ auto-company/
 
 | Dependency | Notes |
 |------|------|
-| **[Codex CLI](https://www.npmjs.com/package/@openai/codex)** | Default engine for current scripts |
-| **Claude Code** | Optional engine (requires adapting `scripts/core/auto-loop.sh`) |
+| **Codex CLI / Claude Code** | Supported CLI engines |
 | **macOS or Windows + WSL2 (Ubuntu)** | macOS uses launchd; Windows uses WSL execution core |
 | `node` | Codex runtime |
 | `make` | Start/stop/monitor command entry (WSL/macOS) |

@@ -7,12 +7,13 @@
 14 个 AI Agent，每个都是该领域世界顶级专家的思维分身。
 自主构思产品、做决策、写代码、部署上线、搞营销。没有人类参与。
 
-基于 [Codex CLI](https://www.npmjs.com/package/@openai/codex)（默认）与 Claude Code（可选）驱动（macOS 原生 + Windows/WSL）。
+基于 [Codex CLI](https://www.npmjs.com/package/@openai/codex) 与 Claude Code 驱动（macOS 原生 + Windows/WSL）。
 
 [![macOS](https://img.shields.io/badge/平台-macOS-blue)](#依赖)
 [![Windows WSL](https://img.shields.io/badge/平台-Windows%20WSL-blue)](#windows-wsl-快速开始)
 [![Codex CLI](https://img.shields.io/badge/驱动-Codex%20CLI-orange)](https://www.npmjs.com/package/@openai/codex)
 [![Claude Code](https://img.shields.io/badge/驱动-Claude%20Code-purple)](#依赖)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/状态-实验中-red)](#%EF%B8%8F-免责声明)
 
 > **⚠️ 实验项目** — 还在测试中，能跑但不一定稳定。  
@@ -36,7 +37,7 @@
 daemon (launchd / systemd --user, 崩溃自重启)
   └── scripts/core/auto-loop.sh (永续循环)
         ├── 读 PROMPT.md + consensus.md
-        ├── CLI 调用（默认：codex exec；可选：Claude Code）
+        ├── CLI 调用（Codex CLI / Claude Code）
         │   ├── 读 CLAUDE.md (公司章程 + 安全红线)
         │   ├── 读 .claude/skills/team/SKILL.md (组队方法)
         │   ├── 组建 Agent Team (3-5 人)
@@ -46,7 +47,7 @@ daemon (launchd / systemd --user, 崩溃自重启)
         └── sleep → 下一轮
 ```
 
-每个周期是一次独立的 CLI 调用（默认：`codex exec`）。`memories/consensus.md` 是唯一的跨周期状态——类似接力赛传棒。
+每个周期是一次独立的 CLI 调用。`memories/consensus.md` 是唯一的跨周期状态——类似接力赛传棒。
 
 ## 你该看哪一节（按平台）
 
@@ -81,7 +82,7 @@ daemon (launchd / systemd --user, 崩溃自重启)
 ```bash
 # 前提:
 # - macOS
-# - 已安装并登录 Codex CLI（默认）或 Claude Code（可选）
+# - 已安装并登录 Codex CLI 或 Claude Code
 # - 可用模型配额
 
 # 克隆
@@ -105,62 +106,16 @@ Windows 下推荐“PowerShell 命令入口 + WSL 执行内核”：
 
 详细步骤见：[`docs/windows-setup.md`](docs/windows-setup.md)
 
-常用 Windows 命令（在仓库根目录执行）：
+最小运行命令（在仓库根目录执行）：
 
 ```powershell
 .\scripts\windows\start-win.ps1              # 启动 WSL daemon + 防睡眠 + WSL keepalive
 .\scripts\windows\status-win.ps1             # 查看 guardian + keepalive + daemon + 循环状态
-.\scripts\windows\monitor-win.ps1            # 实时日志
-.\scripts\windows\last-win.ps1               # 上一轮完整输出
-.\scripts\windows\cycles-win.ps1             # 历史周期摘要
 .\scripts\windows\stop-win.ps1               # 停止循环
-.\scripts\windows\dashboard-win.ps1          # 本地 Web 可视化看板
-.\scripts\windows\enable-autostart-win.ps1  # 可选：启用登录后自启
-.\scripts\windows\disable-autostart-win.ps1 # 关闭登录后自启
-.\scripts\windows\autostart-status-win.ps1  # 查看自启状态
 ```
 
-### Windows 前置事项（每次开始前）
+监控、看板、自启等命令请查看 [`docs/windows-setup.md`](docs/windows-setup.md)。
 
-1. WSL 内 `make`、选定 CLI（`codex` 或 `claude`）、`jq` 可用。
-2. 选定 CLI 已在 WSL 内登录且可调用。
-3. 建议 `command -v codex` 或 `command -v claude` 优先指向 WSL 本地路径（`/home/...`）。
-
-### Windows 推荐操作（标准）
-
-```powershell
-.\scripts\windows\start-win.ps1 -CycleTimeoutSeconds 1800 -LoopInterval 30
-.\scripts\windows\status-win.ps1
-.\scripts\windows\monitor-win.ps1
-.\scripts\windows\last-win.ps1
-.\scripts\windows\cycles-win.ps1
-.\scripts\windows\stop-win.ps1
-.\scripts\windows\dashboard-win.ps1
-```
-
-推荐参数：
-- `CycleTimeoutSeconds` 建议 `900-1800`
-- `LoopInterval` 建议 `30-60`
-
-可选自启：
-- 默认不自动启用
-- 按需执行 `.\scripts\windows\enable-autostart-win.ps1`
-- 若提示 `Access is denied`，请用“管理员 PowerShell”执行启用/关闭自启脚本
-
-### Windows + WSL 索引
-
-完整目录索引与脚本职责表请看：[`INDEX.md`](INDEX.md)
-
-### Chat-first 操作方式（推荐）
-
-如果你不想手动执行命令，可以直接和 Codex/Claude 对话，由其在 Windows 侧代你调用 WSL。
-
-可行性：
-- 可行。
-- 底层仍是同一套脚本链路：`scripts/windows/start-win.ps1` -> WSL `systemd --user` -> `scripts/core/auto-loop.sh`。
-- Windows 入口会额外拉起 `wsl-anchor-win.ps1`，避免 WSL 会话空闲退出导致循环被中断。
-- 当前脚本默认接入 Codex。如需切换 Claude Code，请调整 `scripts/core/auto-loop.sh` 的引擎调用命令。
-- 核心运行机制与手动执行一致，差异只在“操作入口”从手工命令变为对话驱动。
 
 ## 命令速查（按平台）
 
@@ -278,8 +233,7 @@ auto-company/
 
 | 依赖 | 说明 |
 |------|------|
-| **[Codex CLI](https://www.npmjs.com/package/@openai/codex)** | 当前脚本默认引擎 |
-| **Claude Code** | 可选引擎（需调整 `scripts/core/auto-loop.sh`） |
+| **Codex CLI / Claude Code** | 支持的 CLI 引擎 |
 | **macOS 或 Windows + WSL2 (Ubuntu)** | macOS 支持 launchd；Windows 走 WSL 执行内核 |
 | `node` | Codex 运行时 |
 | `make` | 启停与监控命令入口（WSL/macOS） |

@@ -147,6 +147,7 @@ projects/*
 !projects/.gitkeep
 
 # Local/private outputs (do not publish)
+AGENTS.md
 rewrite_report.md
 docs/qa/cycle-*.md
 projects/**/scripts/pilot-smoke.sh
