@@ -1104,3 +1104,160 @@ tar -x <file>                # extract (restore to cache)
 tar -t <file>                # list contents
 tar -z                       # compress (gzip)
 ```
+
+**Examples:**
+```
+tar -cz research.tar.gz https://paper1.com https://paper2.com
+tar -t research.tar.gz
+tar -x research.tar.gz       # restore to cache
+```
+
+---
+
+### `snapshot`
+
+Save timestamped version of current page.
+
+**Syntax:**
+```
+snapshot                     # save with auto timestamp
+snapshot <name>              # save with name
+snapshot -l                  # list snapshots
+snapshot -r <name>           # restore snapshot
+```
+
+**Example:**
+```
+snapshot "before-update"
+# ... time passes ...
+diff --snapshot "before-update"
+```
+
+---
+
+### `wayback`
+
+Interact with Wayback Machine.
+
+**Syntax:**
+```
+wayback <url>                # list available snapshots
+wayback <url> <date>         # fetch specific snapshot
+wayback --save <url>         # request Wayback to archive
+```
+
+**Examples:**
+```
+wayback https://example.com
+wayback https://example.com 2023-06-15
+cd $(wayback https://example.com 2020-01-01)
+```
+
+---
+
+## Site Metadata
+
+### `robots`
+
+Show robots.txt.
+
+**Syntax:**
+```
+robots
+robots <url>
+```
+
+---
+
+### `sitemap`
+
+Show/parse sitemap.xml.
+
+**Syntax:**
+```
+sitemap
+sitemap <url>
+sitemap --urls       # just list URLs
+sitemap --tree       # as tree structure
+```
+
+---
+
+### `headers`
+
+Show HTTP response headers.
+
+**Syntax:**
+```
+headers              # current page
+headers <url>        # fetch headers only (HEAD request)
+headers -v           # verbose (request + response)
+```
+
+---
+
+### `cookies`
+
+Manage cookies.
+
+**Syntax:**
+```
+cookies              # list for current domain
+cookies <domain>     # list for specific domain
+cookies -a           # all domains
+cookies --set <name>=<value>
+cookies --delete <name>
+cookies --clear      # clear all for domain
+cookies --export <file>
+cookies --import <file>
+```
+
+---
+
+## Interaction
+
+### `click`
+
+Simulate click on element.
+
+**Syntax:**
+```
+click <selector>
+click <index>        # from ls output
+click --js           # execute onclick handlers
+```
+
+*Note: Limited without full browser. Best effort.*
+
+---
+
+### `submit`
+
+Submit a form.
+
+**Syntax:**
+```
+submit <form-selector>
+submit -d "field=value&field2=value2"
+submit --json '{"field": "value"}'
+```
+
+**Interactive:**
+```
+submit               # if only one form, prompts for fields
+```
+
+---
+
+### `type`
+
+Fill input field.
+
+**Syntax:**
+```
+type <selector> "text"
+type --clear <selector>      # clear first
+```
+
+---
+
