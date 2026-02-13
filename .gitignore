@@ -149,8 +149,11 @@ projects/*
 # Local/private outputs (do not publish)
 AGENTS.md
 rewrite_report.md
-docs/qa/cycle-*.md
 projects/**/scripts/pilot-smoke.sh
+scripts/core/cycle-*.sh
+.github/workflows/staging-remote-apply.yml
+/=*
+/口径说明*
 .vscode-test-web
 **/.vitepress/cache
 **/.vitepress/.temp
@@ -169,28 +172,6 @@ docs/*
 docs/*/*
 !docs/*/.gitkeep
 !docs/windows-setup.md
-!docs/devops/cycle-012-ci-remote-apply-workflow.md
-!docs/qa/cycle-012-ci-token-gate.md
-!docs/operations/cycle-012-dual-path-signoff.md
-!docs/cfo/cycle-012-ci-vs-local-token-economics.md
-!docs/sales/cycle-013-candidate2-p1-p2-cash-sprint.md
-!docs/operations/cycle-013-candidate2-cash-closure-runbook.md
-!docs/cfo/cycle-013-candidate2-cash-gate-decision-table.md
-!docs/cfo/cycle-013-candidate2-ledger.csv
-!docs/qa/cycle-013-candidate2-commercial-gate.md
-!docs/qa/cycle-013-candidate2-reconciliation.md
-!docs/qa/cycle-013-candidate2-gate-timeline.md
-!docs/critic/cycle-013-candidate2-pre-mortem-and-anti-stall.md
-!docs/operations/evidence/
-!docs/operations/evidence/cycle-016/
-!docs/operations/evidence/cycle-016/**
-!docs/operations/evidence/cycle-013/
-!docs/operations/evidence/cycle-013/**
-!docs/sales/cycle-018-candidate2-apex-second-touch-pack.md
-!docs/operations/cycle-018-candidate2-apex-closeout-execution.md
-!docs/cfo/cycle-018-apex-commitment-gate-finance.md
-!docs/critic/cycle-018-candidate2-apex-pre-mortem-short.md
-!docs/research/cycle-018-candidate3-target-quick-brief.md
 # Ignore all memories (keep folder marker only)
 memories/*
 !memories/.gitkeep
