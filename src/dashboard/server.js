@@ -19,13 +19,15 @@ let state = { loopCount: 0, errorCount: 0, running: false };
 export function startDashboard(config) {
   const app = express();
   const port = config.get('DASHBOARD_PORT');
+  const projectDir = config.get('PROJECT_DIR');
+  const dashboardDir = path.join(projectDir, 'dashboard');
   
   // Serve static files from dashboard folder
-  app.use(express.static(path.join(__dirname, '..', 'dashboard')));
+  app.use(express.static(dashboardDir));
   
   // Serve index.html for root path
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'dashboard', 'index.html'));
+    res.sendFile(path.join(dashboardDir, 'index.html'));
   });
   
   // API endpoints
