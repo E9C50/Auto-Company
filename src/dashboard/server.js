@@ -307,23 +307,6 @@ export function startDashboard(config) {
     fs.writeFileSync(startFile, 'manual');
     res.json({ success: true, message: 'Loop started!' });
   });
-    }
-    
-    // Add idea to consensus
-    const newConsensus = `${consensus}
-
----
-
-## New Idea Received (from dashboard)
-${idea}
-
-Please analyze this idea, refine it into a concrete plan, and execute it!
-`;
-    
-    fs.writeFileSync(consensusFile, newConsensus);
-    
-    res.json({ success: true, message: 'Idea submitted! AI will analyze and execute it in the next cycle.' });
-  });
   
   // Get all cycles (history)
   app.get('/api/cycles', (req, res) => {
@@ -402,7 +385,7 @@ Please analyze this idea, refine it into a concrete plan, and execute it!
     const baseDir = path.join(projectDir, dir);
     
     if (!fs.existsSync(baseDir)) {
-      return return res.status(404).json({ error: 'Directory not found' });
+      return res.status(404).json({ error: 'Directory not found' });
     }
     
     try {
@@ -442,6 +425,13 @@ Please analyze this idea, refine it into a concrete plan, and execute it!
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
+  });
+  
+  // Start loop manually
+  app.post('/api/start', (req, res) => {
+    const startFile = path.join(projectDir, '.auto-company-start');
+    fs.writeFileSync(startFile, 'manual');
+    res.json({ success: true, message: 'Loop started!' });
   });
   
   // Get logs
