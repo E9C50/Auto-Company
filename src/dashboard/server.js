@@ -23,6 +23,11 @@ export function startDashboard(config) {
   // Serve static files from dashboard folder
   app.use(express.static(path.join(__dirname, '..', 'dashboard')));
   
+  // Serve index.html for root path
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dashboard', 'index.html'));
+  });
+  
   // API endpoints
   app.get('/api/status', (req, res) => {
     const stateFile = config.get('STATE_FILE');
