@@ -17,11 +17,16 @@ export class Config {
   }
   
   load() {
-    // Project directory (parent of src/)
-    this.projectDir = path.resolve(__dirname, '..');
+    // Project directory - use cwd or detect from package.json
+    // First check if we're in a project directory (has package.json)
+    let projectDir = process.cwd();
+    if (!fs.existsSync(path.join(projectDir, 'package.json'))) {
+      // Try parent of src/ (for development)
+      projectDir = path.resolve(__dirname, '..');
+    }
     
     // Load .env if exists
-    const envFile = path.join(this.projectDir, '.env');
+    const envFile = path.join(projectDir, '.env');
     if (fs.existsSync(envFile)) {
       const envContent = fs.readFileSync(envFile, 'utf8');
       envContent.split('\n').forEach(line => {
@@ -34,7 +39,7 @@ export class Config {
     
     // Set defaults
     this.config = {
-      PROJECT_DIR: this.projectDir,
+      PROJECT_DIR: projectDir,
       
       // Engine settings
       ENGINE: process.env.ENGINE || 'codex',
@@ -59,11 +64,11 @@ export class Config {
       MAX_LOGS: parseInt(process.env.MAX_LOGS || '200'),
       
       // Files
-      PID_FILE: path.join(this.projectDir, '.auto-company.pid'),
-      STATE_FILE: path.join(this.projectDir, '.auto-company-state.json'),
-      LOG_DIR: path.join(this.projectDir, 'logs'),
-      CONSENSUS_FILE: path.join(this.projectDir, 'memories', 'consensus.md'),
-      PROMPT_FILE: path.join(this.projectDir, 'PROMPT.md'),
+      PID_FILE: path.join(projectDir, '.auto-company.pid'),
+      STATE_FILE: path.join(projectDir, '.auto-company-state.json'),
+      LOG_DIR: path.join(projectDir, 'logs'),
+      CONSENSUS_FILE: path.join(projectDir, 'memories', 'consensus.md'),
+      PROMPT_FILE: path.join(projectDir, 'PROMPT.md'),
       
       // Dashboard
       DASHBOARD_PORT: parseInt(process.env.DASHBOARD_PORT || '3456'),
