@@ -1,0 +1,26 @@
+{
+  "name": "auto-company",
+  "version": "2.0.0",
+  "description": "Auto-Company - Autonomous AI company running 24/7 on Linux/Windows/macOS",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:daemon": "node src/index.js --daemon",
+    "dashboard": "node src/dashboard/server.js",
+    "stop": "node src/index.js --stop",
+    "status": "node src/index.js --status",
+    "logs": "node src/index.js --logs",
+    "install-daemon": "node src/daemon/install.js",
+    "uninstall-daemon": "node src/daemon/uninstall.js"
+  },
+  "keywords": ["ai", "autonomous", "company", "codex", "claude"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "ws": "^8.14.2",
+    "chokidar": "^3.5.3",
+    "dotenv": "^16.3.1"
+  }
+}
