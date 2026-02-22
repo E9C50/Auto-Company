@@ -18,6 +18,7 @@ export class AutoLoop {
     this.consecutiveErrors = 0;
     this.running = false;
     this.wss = null;
+    this.paused = false;
   }
   
   async start() {
@@ -30,6 +31,9 @@ export class AutoLoop {
     if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
     if (!fs.existsSync(memDir)) fs.mkdirSync(memDir, { recursive: true });
     
+    // Restore previous state if exists (continue from where we left off)
+    await this.restoreState();
+    
     // Find engine
     const engineName = this.config.get('ENGINE');
     this.enginePath = await checkEngine(engineName);
@@ -37,14 +41,61 @@ export class AutoLoop {
     // Initialize WebSocket server for real-time updates
     this.initWebSocket();
     
+    this.logger.info(`Resuming from cycle #${this.loopCount}, errors: ${this.errorCount}`);
+    
     // Main loop
     while (this.running) {
+      // Check for pause
+      const pauseFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-paused');
+      if (fs.existsSync(pauseFile)) {
+        this.paused = true;
+        this.logger.info('Paused. Waiting for resume...');
+        this.broadcast('paused', { paused: true });
+        
+        while (this.paused && this.running) {
+          await this.sleep(2000);
+          // Check if still paused
+          if (!fs.existsSync(pauseFile)) {
+            this.paused = false;
+            this.logger.info('Resumed!');
+            this.broadcast('paused', { paused: false });
+          }
+          // Check for stop while paused
+          const stopFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-stop');
+          if (fs.existsSync(stopFile)) {
+            fs.unlinkSync(stopFile);
+            this.running = false;
+            break;
+          }
+        }
+      }
+      
+      if (!this.running) break;
+      
+      // Check for new idea from dashboard
+      const ideaFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-idea');
+      if (fs.existsSync(ideaFile)) {
+        const idea = fs.readFileSync(ideaFile, 'utf8');
+        fs.unlinkSync(ideaFile);
+        this.logger.info(`New idea received: ${idea.substring(0, 100)}...`);
+        this.broadcast('idea', { idea });
+      }
+      
       await this.runCycle();
       
       // Check for stop signal
       const stopFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-stop');
       if (fs.existsSync(stopFile)) {
         fs.unlinkSync(stopFile);
+        
+        // Check if restart is requested
+        const restartFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-restart');
+        if (fs.existsSync(restartFile)) {
+          fs.unlinkSync(restartFile);
+          this.logger.info('Restart requested, continuing from current state...');
+          continue;
+        }
+        
         this.logger.info('Stop signal detected, shutting down...');
         break;
       }
@@ -56,6 +107,24 @@ export class AutoLoop {
     }
     
     this.cleanup();
+  }
+  
+  async restoreState() {
+    const stateFile = this.config.get('STATE_FILE');
+    if (fs.existsSync(stateFile)) {
+      try {
+        const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+        this.loopCount = state.loopCount || 0;
+        this.errorCount = state.errorCount || 0;
+        this.consecutiveErrors = state.consecutiveErrors || 0;
+        
+        if (this.loopCount > 0) {
+          this.logger.info(`Restored state: ${this.loopCount} cycles completed, ${this.errorCount} errors`);
+        }
+      } catch (e) {
+        this.logger.warn(`Failed to restore state: ${e.message}`);
+      }
+    }
   }
   
   initWebSocket() {
