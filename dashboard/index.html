@@ -257,11 +257,36 @@
     <div id="tab-idea" class="section hidden">
       <h2>💡 Submit New Idea</h2>
       <p style="color:#888;margin-bottom:15px">
-        Give a vague idea and the AI will analyze, refine, and execute it autonomously.
+        Give a vague idea. You can approve and start it manually, or set priority for later execution.
       </p>
+      
+      <!-- Start Button -->
+      <div style="margin-bottom:20px;padding:15px;background:rgba(0,200,83,0.1);border-radius:8px">
+        <button class="btn btn-success" onclick="startLoop()">▶ Start Loop</button>
+        <span style="margin-left:10px;color:#888;font-size:13px">Start the autonomous loop</span>
+      </div>
+      
+      <!-- Pending Ideas -->
+      <div style="margin-bottom:20px">
+        <h3 style="margin-bottom:10px">📋 Pending Ideas</h3>
+        <div id="ideasContainer">Loading...</div>
+      </div>
+      
+      <!-- New Idea Form -->
+      <h3 style="margin-bottom:10px">✨ New Idea</h3>
       <div class="idea-form">
         <textarea id="ideaText" placeholder="e.g., Build a tool that helps people track their daily habits..."></textarea>
-        <button class="btn btn-primary" onclick="submitIdea()">🚀 Execute Idea</button>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:12px;color:#888">Priority (1-10)</label>
+            <input type="number" id="ideaPriority" min="1" max="10" value="5" style="width:80px">
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="ideaStartNow">
+            <span style="font-size:13px">Start immediately</span>
+          </label>
+          <button class="btn btn-primary" onclick="submitIdea()">💾 Save Idea</button>
+        </div>
       </div>
     </div>
     
@@ -368,6 +393,7 @@
       if (tab === 'cycles') refreshCycles();
       if (tab === 'memories') refreshMemories();
       if (tab === 'files') refreshFiles();
+      if (tab === 'idea') { refreshIdeas(); }
     }
     
     async function refreshAll() {
@@ -589,15 +615,84 @@
       const idea = document.getElementById('ideaText').value.trim();
       if (!idea) return alert('Please enter an idea');
       
-      await fetch('/api/idea', {
+      const priority = document.getElementById('ideaPriority').value;
+      const startNow = document.getElementById('ideaStartNow').checked;
+      
+      const res = await fetch('/api/idea', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idea })
+        body: JSON.stringify({ idea, priority, startNow })
       });
       
+      const data = await res.json();
       document.getElementById('ideaText').value = '';
-      alert('Idea submitted! The AI will analyze and execute it in the next cycle.');
-      showTab('logs');
+      document.getElementById('ideaStartNow').checked = false;
+      alert(data.message);
+      refreshIdeas();
+    }
+    
+    async function refreshIdeas() {
+      try {
+        const res = await fetch('/api/ideas');
+        const ideas = await res.json();
+        const container = document.getElementById('ideasContainer');
+        
+        if (ideas.length === 0) {
+          container.innerHTML = '<div style="padding:20px;color:#666;text-align:center">No pending ideas</div>';
+          return;
+        }
+        
+        container.innerHTML = ideas.map(idea => `
+          <div style="padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:start">
+              <div style="flex:1">
+                <div style="font-size:14px;margin-bottom:8px">${escapeHtml(idea.idea)}</div>
+                <div style="font-size:11px;color:#666">
+                  Priority: <span style="color:#00d4ff">${idea.priority}</span> | 
+                  Status: <span style="color:${idea.status === 'approved' ? '#00c853' : idea.status === 'rejected' ? '#ff5252' : '#ffab00'}">${idea.status}</span> |
+                  Created: ${new Date(idea.createdAt).toLocaleString()}
+                </div>
+              </div>
+              <div style="display:flex;gap:8px">
+                ${idea.status === 'pending' ? `
+                  <button class="btn btn-success" style="padding:6px 12px;font-size:12px" onclick="approveIdea('${idea.id}')">▶ Start</button>
+                  <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px" onclick="setPriority('${idea.id}')">⚡ Priority</button>
+                  <button class="btn btn-danger" style="padding:6px 12px;font-size:12px" onclick="rejectIdea('${idea.id}')">✕</button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) { console.error(e); }
+    }
+    
+    async function approveIdea(id) {
+      if (!confirm('Approve this idea and start execution?')) return;
+      await fetch(`/api/idea/${id}/start`, { method: 'POST' });
+      alert('Idea approved! Loop is starting...');
+      refreshIdeas();
+    }
+    
+    async function rejectIdea(id) {
+      if (!confirm('Reject this idea?')) return;
+      await fetch(`/api/idea/${id}/reject`, { method: 'POST' });
+      refreshIdeas();
+    }
+    
+    async function setPriority(id) {
+      const priority = prompt('Enter priority (1-10, 10 is highest):', '5');
+      if (priority === null) return;
+      await fetch(`/api/idea/${id}/priority`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priority })
+      });
+      refreshIdeas();
+    }
+    
+    async function startLoop() {
+      await fetch('/api/start', { method: 'POST' });
+      alert('Loop started!');
     }
     
     function showIdeaNotification(idea) {

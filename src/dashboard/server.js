@@ -132,21 +132,181 @@ export function startDashboard(config) {
     res.json({ success: true, paused: false });
   });
   
-  // Send new idea to AI
+  // Send new idea to AI (waits for human approval)
   app.post('/api/idea', (req, res) => {
-    const { idea } = req.body;
+    const { idea, priority = 5, startNow = false } = req.body;
     if (!idea) {
       return res.status(400).json({ error: 'Idea is required' });
     }
     
-    const ideaFile = path.join(projectDir, '.auto-company-idea');
-    fs.writeFileSync(ideaFile, idea);
+    // Save idea to pending queue
+    const ideasDir = path.join(projectDir, '.ideas');
+    if (!fs.existsSync(ideasDir)) {
+      fs.mkdirSync(ideasDir, { recursive: true });
+    }
     
-    // Also update consensus to trigger action
-    const consensusFile = config.get('CONSENSUS_FILE');
-    let consensus = '';
-    if (fs.existsSync(consensusFile)) {
-      consensus = fs.readFileSync(consensusFile, 'utf8');
+    const ideaId = Date.now().toString();
+    const ideaData = {
+      id: ideaId,
+      idea,
+      priority: parseInt(priority), // 1-10, 10 is highest
+      startNow,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+    
+    const ideaFile = path.join(ideasDir, `${ideaId}.json`);
+    fs.writeFileSync(ideaFile, JSON.stringify(ideaData, null, 2));
+    
+    // Update ideas queue index
+    const queueFile = path.join(ideasDir, 'queue.json');
+    let queue = [];
+    if (fs.existsSync(queueFile)) {
+      queue = JSON.parse(fs.readFileSync(queueFile, 'utf8'));
+    }
+    queue.push({ id: ideaId, priority: ideaData.priority, status: 'pending' });
+    // Sort by priority (highest first)
+    queue.sort((a, b) => b.priority - a.priority);
+    fs.writeFileSync(queueFile, JSON.stringify(queue, null, 2));
+    
+    // If startNow is true, create start signal
+    if (startNow) {
+      const startFile = path.join(projectDir, '.auto-company-start');
+      fs.writeFileSync(startFile, ideaId);
+    }
+    
+    res.json({ 
+      success: true, 
+      message: startNow ? 'Idea submitted and starting!' : 'Idea saved. Go to dashboard to approve and start.',
+      ideaId,
+      priority,
+      startNow
+    });
+  });
+  
+  // Get pending ideas
+  app.get('/api/ideas', (req, res) => {
+    const ideasDir = path.join(projectDir, '.ideas');
+    const queueFile = path.join(ideasDir, 'queue.json');
+    
+    if (!fs.existsSync(queueFile)) {
+      return res.json([]);
+    }
+    
+    const queue = JSON.parse(fs.readFileSync(queueFile, 'utf8'));
+    const ideas = queue.map(item => {
+      const ideaFile = path.join(ideasDir, `${item.id}.json`);
+      if (fs.existsSync(ideaFile)) {
+        return JSON.parse(fs.readFileSync(ideaFile, 'utf8'));
+      }
+      return null;
+    }).filter(Boolean);
+    
+    res.json(ideas);
+  });
+  
+  // Approve and start idea
+  app.post('/api/idea/:id/start', (req, res) => {
+    const { id } = req.params;
+    const ideasDir = path.join(projectDir, '.ideas');
+    const ideaFile = path.join(ideasDir, `${id}.json`);
+    
+    if (!fs.existsSync(ideaFile)) {
+      return res.status(404).json({ error: 'Idea not found' });
+    }
+    
+    const ideaData = JSON.parse(fs.readFileSync(ideaFile, 'utf8'));
+    ideaData.status = 'approved';
+    ideaData.startedAt = new Date().toISOString();
+    fs.writeFileSync(ideaFile, JSON.stringify(ideaData, null, 2));
+    
+    // Write to current idea file for execution
+    const currentIdeaFile = path.join(projectDir, '.auto-company-idea');
+    fs.writeFileSync(currentIdeaFile, ideaData.idea);
+    
+    // Trigger start
+    const startFile = path.join(projectDir, '.auto-company-start');
+    fs.writeFileSync(startFile, id);
+    
+    // Update queue
+    const queueFile = path.join(ideasDir, 'queue.json');
+    if (fs.existsSync(queueFile)) {
+      const queue = JSON.parse(fs.readFileSync(queueFile, 'utf8'));
+      const idx = queue.findIndex(q => q.id === id);
+      if (idx !== -1) {
+        queue[idx].status = 'approved';
+        fs.writeFileSync(queueFile, JSON.stringify(queue, null, 2));
+      }
+    }
+    
+    res.json({ success: true, message: 'Idea approved and starting!' });
+  });
+  
+  // Reject idea
+  app.post('/api/idea/:id/reject', (req, res) => {
+    const { id } = req.params;
+    const ideasDir = path.join(projectDir, '.ideas');
+    const ideaFile = path.join(ideasDir, `${id}.json`);
+    
+    if (!fs.existsSync(ideaFile)) {
+      return res.status(404).json({ error: 'Idea not found' });
+    }
+    
+    const ideaData = JSON.parse(fs.readFileSync(ideaFile, 'utf8'));
+    ideaData.status = 'rejected';
+    ideaData.rejectedAt = new Date().toISOString();
+    fs.writeFileSync(ideaFile, JSON.stringify(ideaData, null, 2));
+    
+    // Update queue
+    const queueFile = path.join(ideasDir, 'queue.json');
+    if (fs.existsSync(queueFile)) {
+      const queue = JSON.parse(fs.readFileSync(queueFile, 'utf8'));
+      const idx = queue.findIndex(q => q.id === id);
+      if (idx !== -1) {
+        queue.splice(idx, 1);
+        fs.writeFileSync(queueFile, JSON.stringify(queue, null, 2));
+      }
+    }
+    
+    res.json({ success: true, message: 'Idea rejected' });
+  });
+  
+  // Set idea priority
+  app.post('/api/idea/:id/priority', (req, res) => {
+    const { id } = req.params;
+    const { priority } = req.body;
+    const ideasDir = path.join(projectDir, '.ideas');
+    const ideaFile = path.join(ideasDir, `${id}.json`);
+    
+    if (!fs.existsSync(ideaFile)) {
+      return res.status(404).json({ error: 'Idea not found' });
+    }
+    
+    const ideaData = JSON.parse(fs.readFileSync(ideaFile, 'utf8'));
+    ideaData.priority = Math.min(10, Math.max(1, parseInt(priority) || 5));
+    fs.writeFileSync(ideaFile, JSON.stringify(ideaData, null, 2));
+    
+    // Re-sort queue
+    const queueFile = path.join(ideasDir, 'queue.json');
+    if (fs.existsSync(queueFile)) {
+      let queue = JSON.parse(fs.readFileSync(queueFile, 'utf8'));
+      const idx = queue.findIndex(q => q.id === id);
+      if (idx !== -1) {
+        queue[idx].priority = ideaData.priority;
+        queue.sort((a, b) => b.priority - a.priority);
+        fs.writeFileSync(queueFile, JSON.stringify(queue, null, 2));
+      }
+    }
+    
+    res.json({ success: true, priority: ideaData.priority });
+  });
+  
+  // Start loop manually
+  app.post('/api/start', (req, res) => {
+    const startFile = path.join(projectDir, '.auto-company-start');
+    fs.writeFileSync(startFile, 'manual');
+    res.json({ success: true, message: 'Loop started!' });
+  });
     }
     
     // Add idea to consensus

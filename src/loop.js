@@ -41,6 +41,36 @@ export class AutoLoop {
     // Initialize WebSocket server for real-time updates
     this.initWebSocket();
     
+    this.logger.info(`Starting in PAUSED state. Use dashboard to resume.`);
+    this.saveState('paused');
+    this.broadcast('waiting', { message: 'Waiting for human to start. Submit an idea first!' });
+    
+    // Wait for human to start
+    while (this.running) {
+      const startFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-start');
+      const stopFile = path.join(this.config.get('PROJECT_DIR'), '.auto-company-stop');
+      
+      if (fs.existsSync(startFile)) {
+        fs.unlinkSync(startFile);
+        this.logger.info('Human started the loop!');
+        this.broadcast('started', { message: 'Loop started!' });
+        break;
+      }
+      
+      if (fs.existsSync(stopFile)) {
+        fs.unlinkSync(stopFile);
+        this.running = false;
+        break;
+      }
+      
+      await this.sleep(2000);
+    }
+    
+    if (!this.running) {
+      this.cleanup();
+      return;
+    }
+    
     this.logger.info(`Resuming from cycle #${this.loopCount}, errors: ${this.errorCount}`);
     
     // Main loop
